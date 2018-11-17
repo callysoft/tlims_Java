@@ -1,7 +1,9 @@
 package com.tlimskech.marketplace.exception;
 
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -52,6 +54,13 @@ public class ErrorControllerAdvice {
         return ResponseEntity.ok(data);
     }
 
+    @ExceptionHandler(SQLGrammarException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    public ResponseEntity<?> handleUserNameNotFoundException(SQLGrammarException exception) {
+        ErrorData data = new ErrorData(ErrorCode.SQL_GRAMMAR, exception.getMessage());
+        return ResponseEntity.ok(data);
+    }
+
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<?> handleUserNameNotFoundException(UsernameNotFoundException exception) {
@@ -64,6 +73,17 @@ public class ErrorControllerAdvice {
     public ResponseEntity<?> handleUserNameNotFoundException(BadCredentialsException exception) {
         ErrorData data = new ErrorData(ErrorCode.AUTHENTICATION, exception.getMessage());
         return ResponseEntity.ok(data);
+    }
+
+    @ExceptionHandler(org.hibernate.exception.ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<?> handleUserNameNotFoundException(ConstraintViolationException exception) {
+        List<ErrorData> errors = new ArrayList<>();
+        for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
+            String value = (violation.getInvalidValue() == null ? null : violation.getInvalidValue().toString());
+            errors.add(new ErrorData(violation.getPropertyPath().toString(), value, violation.getMessage()));
+        }
+        return ResponseEntity.ok(errors);
     }
 
     @ExceptionHandler(Exception.class)

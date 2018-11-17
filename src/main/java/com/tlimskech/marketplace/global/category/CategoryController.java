@@ -1,10 +1,8 @@
 package com.tlimskech.marketplace.global.category;
 
+import com.tlimskech.marketplace.core.data.SearchRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("categories")
@@ -19,6 +17,16 @@ public class CategoryController {
     @GetMapping("list")
     public ResponseEntity<?> list() {
         return ResponseEntity.ok(categoryService.findAll());
+    }
+
+    @PostMapping("create")
+    public ResponseEntity<?> createCategory(@RequestBody Category category) {
+        return ResponseEntity.ok(categoryService.create(category));
+    }
+
+    @PostMapping("/findAll")
+    public ResponseEntity<?> findAll(@RequestBody SearchRequest searchRequest) {
+        return ResponseEntity.ok(categoryService.findAll(searchRequest, searchRequest.getPaging().getPageRequest()));
     }
 
     @GetMapping("findByParentCategory/{parentId}")

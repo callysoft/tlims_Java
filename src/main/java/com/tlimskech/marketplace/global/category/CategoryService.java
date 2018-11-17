@@ -50,7 +50,7 @@ public class CategoryService implements BaseService<Category, Long> {
 
     @Override
     public Collection<Category> findAll() {
-        return categoryRepository.findAll();
+        return categoryRepository.findByParentCategoryIsNull();
     }
 
     @Override
@@ -59,8 +59,8 @@ public class CategoryService implements BaseService<Category, Long> {
     }
 
     @Override
-    public Page<Category> findAll(SearchRequest request, Pageable pageable) {
-        return null;
+    public Page<Category> findAll(SearchRequest request, Pageable p) {
+        return categoryRepository.findAll(new Category().searchPredicate(request), p);
     }
 
     List<Category> findByParentCategory(Long parentId) {

@@ -58,6 +58,7 @@ public class SecurityAuthenticationSuccessHandler implements AuthenticationSucce
         tokenMap.put("created", String.valueOf(dateCreated));
         tokenMap.put("scope", authority);
         tokenMap.put("email", user.getEmail());
+        tokenMap.put("user", user.toJsonString(false));
         // tokenMap.put("refreshToken", refreshToken);
 
         response.setStatus(HttpStatus.OK.value());

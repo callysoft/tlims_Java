@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * @author Goodluck
  */
 public enum ErrorCode {
-    GLOBAL(2), AUTHENTICATION(10), JWT_TOKEN_EXPIRED(11), DUPLICATE(12), DATA_NOT_FOUND(13), BAD_ARGUEMENT(14);
+    GLOBAL(2), AUTHENTICATION(10), JWT_TOKEN_EXPIRED(11), DUPLICATE(12), DATA_NOT_FOUND(13), BAD_ARGUEMENT(14), SQL_GRAMMAR(15);
 
     private int errorCode;
 

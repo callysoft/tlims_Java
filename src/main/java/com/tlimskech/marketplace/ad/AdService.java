@@ -1,13 +1,18 @@
 package com.tlimskech.marketplace.ad;
 
+import com.tlimskech.marketplace.auth.user.UserService;
 import com.tlimskech.marketplace.core.data.SearchRequest;
 import com.tlimskech.marketplace.core.service.BaseService;
 import com.tlimskech.marketplace.exception.ApplicationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static java.lang.Boolean.FALSE;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
 public class AdService implements BaseService<Ad, Long> {
@@ -20,6 +25,8 @@ public class AdService implements BaseService<Ad, Long> {
 
     @Override
     public Ad create(Ad ad) {
+        ad.setNegotiable(!isEmpty(ad.getNegotiable()) ? ad.getNegotiable() : FALSE);
+        ad.setAuthorized(!isEmpty(ad.getAuthorized()) ? ad.getAuthorized() : FALSE);
         return adRepository.save(ad);
     }
 
@@ -46,7 +53,9 @@ public class AdService implements BaseService<Ad, Long> {
     }
 
     @Override
-    public Page<Ad> findAll(SearchRequest request, Pageable pageable) {
-        return null;
+    public Page<Ad> findAll(SearchRequest request) {
+        System.out.println("Current User Logged In: " + UserService.getCurrentUser());
+        return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.createdBy.eq(UserService.getCurrentUser())),
+                PageRequest.of(request.getPaging().getPage(), request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 }

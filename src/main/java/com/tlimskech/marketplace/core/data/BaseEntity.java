@@ -46,6 +46,8 @@ public class BaseEntity extends Data implements ICode{
 
     @PrePersist
     public void setCode() {
+        Active active = this.getClass().getDeclaredAnnotation(Active.class);
+        this.setStatus(active != null && active.flag());
         this.setCode(Utils.hash(forCode()));
     }
 

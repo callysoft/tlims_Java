@@ -3,8 +3,11 @@ package com.tlimskech.marketplace.auth.user;
 import com.tlimskech.marketplace.auth.role.Role;
 import com.tlimskech.marketplace.core.data.SearchRequest;
 import com.tlimskech.marketplace.core.service.BaseService;
+import com.tlimskech.marketplace.security.login.UserContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -53,5 +56,13 @@ public class UserService implements BaseService<User, Long> {
 
     public Optional<User> findByUsername(String email) {
         return Optional.ofNullable(userRepository.findByEmail(email));
+    }
+
+    public static String getCurrentUser() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || "anonymousUser".equals(authentication.getPrincipal()))
+            return "SYSTEM";
+        UserContext context = (UserContext) authentication.getPrincipal();
+        return context.getEmail();
     }
 }

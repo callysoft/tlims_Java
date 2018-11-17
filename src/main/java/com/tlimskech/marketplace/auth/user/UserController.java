@@ -24,7 +24,6 @@ public class UserController {
 
     @PostMapping("/findAll")
     public ResponseEntity<?> findAllUser(@RequestBody SearchRequest searchRequest) {
-        System.out.println(searchRequest.getPaging().getPageRequest());
         return ResponseEntity.ok(userService.findAll(searchRequest, searchRequest.getPaging().getPageRequest()));
     }
 }

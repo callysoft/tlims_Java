@@ -16,6 +16,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Code implements Serializable {
 
-    @Column(nullable = false, unique = true, name = "data_code")
+    @Column(nullable = false, name = "data_code")
     private String dataCode;
 }

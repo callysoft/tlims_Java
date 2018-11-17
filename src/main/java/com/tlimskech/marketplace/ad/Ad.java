@@ -1,14 +1,14 @@
 package com.tlimskech.marketplace.ad;
 
-import com.tlimskech.marketplace.core.data.Active;
-import com.tlimskech.marketplace.core.data.BaseEntity;
-import com.tlimskech.marketplace.core.data.Condition;
-import com.tlimskech.marketplace.core.data.Money;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.tlimskech.marketplace.core.data.*;
 import com.tlimskech.marketplace.core.valueobject.Code;
 import com.tlimskech.marketplace.core.valueobject.TitleDescription;
 import com.tlimskech.marketplace.global.category.Category;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -21,11 +21,10 @@ import java.util.List;
 @Entity
 @Table(name = "ad_item")
 @Data
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "ad_category", discriminatorType = DiscriminatorType.STRING)
 public class Ad extends BaseEntity {
 
-    @Embedded
-    @Valid
-    private Code adCode;
     @Valid
     @Embedded
     private TitleDescription titleDescription;
@@ -34,18 +33,40 @@ public class Ad extends BaseEntity {
     private List<String> images = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private AdType adType;
-    @NotNull(message = "category is required")
-    @JoinColumn(nullable = false, name = "cat_id")
-    @OneToOne
-    private Category category;
-    @NotNull(message = "sub-category is required")
-    @JoinColumn(nullable = false, name = "sub_cat_id")
-    @OneToOne
-    private Category subCategory;
+    @NotNull(message = "Category is Required")
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "cat_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "cat"))})
+    private CodeValue category;
+    @NotNull(message = "Subcategory is Required")
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "sub_cat_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "sub_cat"))})
+    private CodeValue subCategory;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "cat_type_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "sub_cat_type"))})
+    private CodeValue subCatType;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "brand_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "brand"))})
+    private CodeValue brand;
     @Enumerated(EnumType.STRING)
     private Condition itemCondition;
     @AttributeOverrides({@AttributeOverride(name = "currency", column = @Column(name = "price_ccy", length = 3)),
-            @AttributeOverride(name = "amount", column = @Column(name = "price_amt", scale = 10, precision = 38, unique = false))})
+            @AttributeOverride(name = "amount", column = @Column(name = "price_amt", scale = 10, precision = 38))})
     private Money price;
-    private boolean negotiable;
+    private Boolean negotiable;
+    private Boolean authorized;
+
+    public BooleanExpression predicates(SearchRequest request) {
+        QAd qAd = QAd.ad;
+        if (StringUtils.isEmpty(request.getSearchTerm())) {
+            return qAd.isNotNull();
+        }
+
+        return qAd.price.amount.stringValue().containsIgnoreCase(request.getSearchTerm())
+                .or(qAd.titleDescription.title.containsIgnoreCase(request.getSearchTerm()))
+                .or(qAd.titleDescription.description.containsIgnoreCase(request.getSearchTerm()))
+                .or(qAd.brand.name.containsIgnoreCase(request.getSearchTerm()))
+                .or(qAd.category.name.containsIgnoreCase(request.getSearchTerm()))
+                .or(qAd.subCategory.name.containsIgnoreCase(request.getSearchTerm()))
+                .or(qAd.subCatType.name.containsIgnoreCase(request.getSearchTerm()));
+    }
 }

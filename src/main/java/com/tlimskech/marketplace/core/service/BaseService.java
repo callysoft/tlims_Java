@@ -17,5 +17,6 @@ public interface BaseService<T, ID> {
         return Collections.emptyList();
     }
     Optional<T> findById(ID id);
-    Page<T> findAll(SearchRequest request, Pageable pageable);
+    default Page<T> findAll(SearchRequest request, Pageable pageable) { return Page.empty(); }
+    default Page<T> findAll(SearchRequest request) { return Page.empty(); }
 }
