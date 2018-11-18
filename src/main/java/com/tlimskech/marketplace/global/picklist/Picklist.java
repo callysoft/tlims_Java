@@ -1,5 +1,6 @@
 package com.tlimskech.marketplace.global.picklist;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.tlimskech.marketplace.core.data.Active;
 import com.tlimskech.marketplace.core.data.BaseModel;
@@ -10,6 +11,7 @@ import com.tlimskech.marketplace.global.category.Category;
 import com.tlimskech.marketplace.global.category.QCategory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -55,10 +57,18 @@ public class Picklist extends BaseModel {
                 .or(qPicklist.picklistType.stringValue().containsIgnoreCase(request.getSearchTerm()));
     }
 
-    public BooleanExpression predicate() {
+    public BooleanBuilder predicate() {
         QPicklist qPicklist = QPicklist.picklist;
-        return  qPicklist.category.eq(this.getCategory())
-                .and(qPicklist.subCategory.eq(this.getSubCategory()))
-                .and(qPicklist.picklistType.eq(this.getPicklistType()));
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        booleanBuilder.and(qPicklist.category.eq(this.getCategory()))
+                .and(qPicklist.subCategory.eq(this.getSubCategory()));
+        booleanBuilder.and(qPicklist.picklistType.eq(this.getPicklistType()));
+            if (!ObjectUtils.isEmpty(this.getParentpickListType())){
+                booleanBuilder.and(qPicklist.parentpickListType.eq(this.getParentpickListType()));
+            }
+            if (!ObjectUtils.isEmpty(this.getParentList())){
+                booleanBuilder.and(qPicklist.parentList.eq(this.getParentList()));
+            }
+        return booleanBuilder;
     }
 }

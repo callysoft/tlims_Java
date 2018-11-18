@@ -21,7 +21,7 @@ public class BeautyController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestPart("fashion") Beauty beauty,
+    public ResponseEntity<?> create(@RequestPart("beauty") Beauty beauty,
                                               @RequestParam(required = false, name = "file") MultipartFile[] file) throws IOException {
         List<String> images = fileStorageService.multipleUpload(file, beauty.getTitleDescription().getTitle());
         beauty.setImages(images);

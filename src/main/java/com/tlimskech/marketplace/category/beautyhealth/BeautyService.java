@@ -22,7 +22,7 @@ public class BeautyService implements BaseService<Beauty, Long> {
 
     @Override
     public Beauty create(Beauty beauty) {
-        return null;
+        return (Beauty) adService.create(beauty);
     }
 
     @Override
