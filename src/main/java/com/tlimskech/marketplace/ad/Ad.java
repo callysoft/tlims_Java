@@ -1,11 +1,8 @@
 package com.tlimskech.marketplace.ad;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.tlimskech.marketplace.core.data.*;
-import com.tlimskech.marketplace.core.valueobject.Code;
 import com.tlimskech.marketplace.core.valueobject.TitleDescription;
-import com.tlimskech.marketplace.global.category.Category;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.util.StringUtils;
@@ -54,13 +51,14 @@ public class Ad extends BaseEntity {
     private Money price;
     private Boolean negotiable;
     private Boolean authorized;
+    private Boolean featured;
+    private Boolean archived;
 
     public BooleanExpression predicates(SearchRequest request) {
         QAd qAd = QAd.ad;
         if (StringUtils.isEmpty(request.getSearchTerm())) {
             return qAd.isNotNull();
         }
-
         return qAd.price.amount.stringValue().containsIgnoreCase(request.getSearchTerm())
                 .or(qAd.titleDescription.title.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.titleDescription.description.containsIgnoreCase(request.getSearchTerm()))
@@ -68,5 +66,9 @@ public class Ad extends BaseEntity {
                 .or(qAd.category.name.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.subCategory.name.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.subCatType.name.containsIgnoreCase(request.getSearchTerm()));
+    }
+
+    public BooleanExpression allAds() {
+        return QAd.ad.authorized.isTrue();
     }
 }
