@@ -35,6 +35,11 @@ public class AdController {
         return ResponseEntity.ok(adService.archivedAds(searchRequest));
     }
 
+    @GetMapping("findById/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(adService.findById(id));
+    }
+
     @GetMapping("activate/{id}")
     public ResponseEntity<?> activate(@PathVariable Long id) {
         adService.activate(id);
