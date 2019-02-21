@@ -8,7 +8,6 @@ import com.tlimskech.marketplace.core.data.SearchRequest;
 import com.tlimskech.marketplace.core.valueobject.Code;
 import com.tlimskech.marketplace.core.valueobject.TitleDescription;
 import com.tlimskech.marketplace.global.category.Category;
-import com.tlimskech.marketplace.global.category.QCategory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.util.ObjectUtils;
