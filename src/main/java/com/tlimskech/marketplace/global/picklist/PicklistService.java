@@ -1,5 +1,6 @@
 package com.tlimskech.marketplace.global.picklist;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.tlimskech.marketplace.core.data.SearchRequest;
 import com.tlimskech.marketplace.core.service.BaseService;
 import org.springframework.data.domain.Page;
@@ -56,6 +57,15 @@ public class PicklistService implements BaseService<Picklist, Long> {
 
     List<Picklist> findByPickListType(PicklistType picklistType) {
         return picklistRepository.findByPicklistType(picklistType);
+    }
+
+    Iterable<Picklist> findByListTypeAndCategoryAndParent(String listType, String catCode, String subcatCode, String parentCode) {
+        QPicklist qPicklist = QPicklist.picklist;
+        BooleanExpression expression = qPicklist.picklistType.eq(PicklistType.valueOf(listType))
+                .and(qPicklist.category.code.eq(catCode))
+                .and(qPicklist.subCategory.code.eq(subcatCode))
+                .and(qPicklist.parentList.pickListcode.dataCode.eq(parentCode));
+        return picklistRepository.findAll(expression);
     }
 
     Iterable<Picklist> findByCategoryAndPickListType(Picklist picklist) {

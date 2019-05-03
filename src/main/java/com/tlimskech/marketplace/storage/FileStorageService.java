@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface FileStorageService {
-	String singleUpload(MultipartFile file, String name) throws IOException;
-	List<String> multipleUpload(MultipartFile[] file, String name) throws IOException;
+	String singleUpload(MultipartFile file, String name);
+	List<String> multipleUpload(MultipartFile[] file, String name);
 	InputStream stream(String key);
 }

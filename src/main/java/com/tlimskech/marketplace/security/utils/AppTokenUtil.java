@@ -43,6 +43,7 @@ public class AppTokenUtil {
             final Claims claims = getClaimsFromToken(token);
             username = claims.getSubject();
         } catch (Exception e) {
+            e.printStackTrace();
             username = null;
         }
         return username;

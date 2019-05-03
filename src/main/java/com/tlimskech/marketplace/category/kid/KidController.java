@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/kids")
+@RequestMapping("/api/kids")
 public class KidController {
 
     private final KidService kidService;

@@ -73,7 +73,7 @@ public class Data implements Serializable {
      * @param ignoreProperties additional properties you want to ignore
      */
     public void copyForUpdate(Object source, String... ignoreProperties) {
-        String ignoreList = "createDate,version,modifiedDate,id,code,active,createdBy,modifiedBy";
+        String ignoreList = "createDate,version,modifiedDate,id,code,active,createdBy,modifiedBy,LastModifiedDate,code,status";
         String[] ignores = StringUtils.concatenateStringArrays(ignoreProperties, ignoreList.split(","));
         BeanUtils.copyProperties(source, this, ignores);
     }

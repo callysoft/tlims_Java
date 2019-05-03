@@ -74,8 +74,8 @@ public class AdService implements BaseService<Ad, Long> {
                 PageRequest.of(request.getPaging().getPage(), request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 
-    public Page<Ad> pedingAds(SearchRequest request) {
-        return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.createdBy.eq(UserService.getCurrentUser()))
+    public Page<Ad> pendingAds(SearchRequest request) {
+        return adRepository.findAll(new Ad().predicates(request)
                 .and(QAd.ad.authorized.isFalse()), PageRequest.of(request.getPaging().getPage(),
                 request.getPaging().getLimit(), request.getPaging().getSort()));
     }
@@ -93,8 +93,8 @@ public class AdService implements BaseService<Ad, Long> {
     }
 
     // PUBLIC
-    public Page<Ad> findAllAds() {
-        return adRepository.findAll(new Ad().allAds(),
+    public Page<Ad> findAllAds(SearchRequest request) {
+        return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.authorized.isTrue()),
                 PageRequest.of(0, 24, Sort.by(Sort.Direction.DESC, "createdDate")));
     }
 

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/electronics")
+@RequestMapping("/api/electronics")
 public class ElectronicController {
 
     private final ElectronicService electronicService;
@@ -44,7 +44,7 @@ public class ElectronicController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createElectronic(@RequestPart("electronic") Electronic electronic,
-                                              @RequestParam(required = false, name = "file") MultipartFile[] file) throws IOException {
+                                              @RequestParam(required = false, name = "file") MultipartFile[] file) {
         List<String> images = fileStorageService.multipleUpload(file, electronic.getTitleDescription().getTitle());
         electronic.setImages(images);
         return ResponseEntity.ok(electronicService.create(electronic));

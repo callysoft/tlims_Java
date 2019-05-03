@@ -31,6 +31,7 @@ public class Category extends BaseModel {
     @OneToOne
     @JoinColumn(name = "parent_id")
     private Category parentCategory;
+    private String image;
 
     public BooleanExpression searchPredicate(SearchRequest request) {
         QCategory qCategory = QCategory.category;

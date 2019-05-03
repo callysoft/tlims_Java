@@ -10,8 +10,6 @@ import java.io.Serializable;
 public class ChangePasswordRequest implements Serializable {
 
     @NotNull
-    private String username;
-    @NotNull
     private String currentPassword;
     @NotNull
     private String password;

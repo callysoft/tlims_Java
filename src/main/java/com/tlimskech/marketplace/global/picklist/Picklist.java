@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.tlimskech.marketplace.core.data.Active;
 import com.tlimskech.marketplace.core.data.BaseModel;
+import com.tlimskech.marketplace.core.data.CodeValue;
 import com.tlimskech.marketplace.core.data.SearchRequest;
 import com.tlimskech.marketplace.core.valueobject.Code;
 import com.tlimskech.marketplace.core.valueobject.TitleDescription;
@@ -40,12 +41,14 @@ public class Picklist extends BaseModel {
     @OneToOne
     @JoinColumn(name = "parent_id")
     private Picklist parentList;
-    @OneToOne
-    @JoinColumn(name = "category_id", nullable = true)
-    private Category category;
-    @OneToOne
-    @JoinColumn(name = "sub_cat_id", nullable = true)
-    private Category subCategory;
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "code", column = @Column(name = "cat_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "cat_nm")) })
+    private CodeValue category;
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "code", column = @Column(name = "subcat_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "subcat_nm")) })
+    private CodeValue subCategory;
 
     public BooleanExpression searchPredicate(SearchRequest request) {
         QPicklist qPicklist = QPicklist.picklist;
@@ -59,9 +62,9 @@ public class Picklist extends BaseModel {
     public BooleanBuilder predicate() {
         QPicklist qPicklist = QPicklist.picklist;
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        booleanBuilder.and(qPicklist.category.eq(this.getCategory()))
-                .and(qPicklist.subCategory.eq(this.getSubCategory()));
-        booleanBuilder.and(qPicklist.picklistType.eq(this.getPicklistType()));
+//        booleanBuilder.and(qPicklist.category.eq(this.getCategory()))
+//                .and(qPicklist.subCategory.eq(this.getSubCategory()));
+//        booleanBuilder.and(qPicklist.picklistType.eq(this.getPicklistType()));
             if (!ObjectUtils.isEmpty(this.getParentpickListType())){
                 booleanBuilder.and(qPicklist.parentpickListType.eq(this.getParentpickListType()));
             }

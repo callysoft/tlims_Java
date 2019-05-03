@@ -8,5 +8,6 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long>, QuerydslPredicateExecutor<Category> {
 
     List<Category> findByParentCategory_Id(Long parentId);
-    List<Category> findByParentCategoryIsNull();
+    List<Category> findByParentCategoryIsNullAndStatusIsTrue();
+    List<Category> findByParentCategory_CategoryCode_DataCodeAndStatusIsTrue(String code);
 }

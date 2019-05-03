@@ -25,7 +25,7 @@ public class StorageController {
     public void download(@PathVariable("key") String key, HttpServletResponse response) {
         try {
             InputStream inputStream = fileStorageService.stream(key);
-            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+//            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             IOUtils.copy(inputStream, response.getOutputStream());
             IOUtils.closeQuietly(inputStream);
         } catch (IOException e) {

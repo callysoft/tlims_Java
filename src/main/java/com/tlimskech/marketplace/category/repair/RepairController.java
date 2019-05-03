@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/repairs")
+@RequestMapping("/api/repairs")
 public class RepairController {
 
     private final RepairService repairService;

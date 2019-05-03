@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import java.util.List;
 import static org.springframework.util.Assert.notNull;
 
 @Service
+@Profile("dev")
 public class FileStorageServiceImpl implements FileStorageService {
 
     @Value("${upload.dir}")
@@ -40,7 +42,8 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     }
 
-    public List<String> multipleUpload(MultipartFile[] file, String name) throws IOException {
+    @SneakyThrows
+    public List<String> multipleUpload(MultipartFile[] file, String name) {
         if (ObjectUtils.isEmpty(file)) {
             return Collections.singletonList("default.png");
         }

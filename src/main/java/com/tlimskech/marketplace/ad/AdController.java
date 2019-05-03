@@ -15,14 +15,9 @@ public class AdController {
         this.adService = adService;
     }
 
-    @PostMapping("listUserAds")
-    public ResponseEntity<?> listUserAds(@RequestBody SearchRequest searchRequest) {
-        return ResponseEntity.ok(adService.findAll(searchRequest));
-    }
-
     @PostMapping("pendingAds")
-    public ResponseEntity<?> pedingAds(@RequestBody SearchRequest searchRequest) {
-        return ResponseEntity.ok(adService.pedingAds(searchRequest));
+    public ResponseEntity<?> pendingAds(@RequestBody SearchRequest searchRequest) {
+        return ResponseEntity.ok(adService.pendingAds(searchRequest));
     }
 
     @PostMapping("featuredAds")
@@ -52,8 +47,8 @@ public class AdController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("adList")
-    public ResponseEntity<?> adList() {
-        return ResponseEntity.ok(adService.findAllAds());
+    @PostMapping("adList")
+    public ResponseEntity<?> adList(@RequestBody SearchRequest searchRequest) {
+        return ResponseEntity.ok(adService.findAllAds(searchRequest));
     }
 }

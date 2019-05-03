@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/mobiles")
+@RequestMapping("/api/mobiles")
 public class MobileController {
 
     private final MobileService mobileService;
@@ -22,7 +22,7 @@ public class MobileController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestPart("mobile") Mobile mobile,
-                                    @RequestParam(required = false, name = "file") MultipartFile[] file) throws IOException {
+                                    @RequestParam(required = false, name = "file") MultipartFile[] file) {
         List<String> images = fileStorageService.multipleUpload(file, mobile.getTitleDescription().getTitle());
         mobile.setImages(images);
         return ResponseEntity.ok(mobileService.create(mobile));

@@ -46,14 +46,14 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private SecurityAuthenticationTokenFilter buildSecurityLoginProcessingFilter() throws Exception {
+    private SecurityAuthenticationTokenFilter buildSecurityLoginProcessingFilter() {
         SecurityAuthenticationTokenFilter filter = new SecurityAuthenticationTokenFilter(FORM_BASED_LOGIN_ENTRY_POINT,
                 authenticationSuccessHandler, authenticationFailureHandler, objectMapper);
         filter.setAuthenticationManager(this.authenticationManager);
         return filter;
     }
 
-    private AppTokenAuthenticationProcessingFilter buildJwtTokenAuthenticationProcessingFilter() throws Exception {
+    private AppTokenAuthenticationProcessingFilter buildJwtTokenAuthenticationProcessingFilter() {
         List<String> pathsToSkip = Arrays.asList(TOKEN_REFRESH_ENTRY_POINT, FORM_BASED_LOGIN_ENTRY_POINT);
         SkipPathRequestMatcher matcher = new SkipPathRequestMatcher(pathsToSkip, TOKEN_BASED_AUTH_ENTRY_POINT);
         AppTokenAuthenticationProcessingFilter filter = new AppTokenAuthenticationProcessingFilter(matcher,

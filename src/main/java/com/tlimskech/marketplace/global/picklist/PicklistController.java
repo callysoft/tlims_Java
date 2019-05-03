@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.*;
 public class PicklistController {
 
     private final PicklistService picklistService;
+    private final PicklistRepository picklistRepository;
 
-    public PicklistController(PicklistService picklistService) {
+    public PicklistController(PicklistService picklistService, PicklistRepository picklistRepository) {
         this.picklistService = picklistService;
+        this.picklistRepository = picklistRepository;
     }
 
     @GetMapping("list")
@@ -42,5 +44,17 @@ public class PicklistController {
     @GetMapping("findByPickListType/{picklistType}")
     public ResponseEntity<?> findByPickListType(@PathVariable("picklistType") String picklistType) {
         return ResponseEntity.ok(picklistService.findByPickListType(PicklistType.valueOf(picklistType)));
+    }
+
+    @GetMapping("findByListTypeAndCategory/{listType}/{catCode}/{subcatCode}")
+    public ResponseEntity<?> findByListTypeAndCategory(@PathVariable("listType") String listType, @PathVariable("catCode") String catCode,
+                                                       @PathVariable("subcatCode") String subcatCode) {
+        return ResponseEntity.ok(picklistRepository.findByPicklistTypeAndCategory_CodeAndSubCategory_Code(PicklistType.valueOf(listType), catCode, subcatCode));
+    }
+
+    @GetMapping("findByListTypeAndCategoryAndParent/{listType}/{catCode}/{subcatCode}/{parentCode}")
+    public ResponseEntity<?> findByListTypeAndCategoryAndParent(@PathVariable("listType") String listType, @PathVariable("catCode") String catCode,
+                                                       @PathVariable("subcatCode") String subcatCode, @PathVariable("parentCode") String parentCode) {
+        return ResponseEntity.ok(picklistService.findByListTypeAndCategoryAndParent(listType, catCode, subcatCode, parentCode));
     }
 }

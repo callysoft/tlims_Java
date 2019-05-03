@@ -50,7 +50,7 @@ public class CategoryService implements BaseService<Category, Long> {
 
     @Override
     public Collection<Category> findAll() {
-        return categoryRepository.findByParentCategoryIsNull();
+        return categoryRepository.findByParentCategoryIsNullAndStatusIsTrue();
     }
 
     @Override

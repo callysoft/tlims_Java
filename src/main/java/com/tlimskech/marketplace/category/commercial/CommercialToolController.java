@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/commercials")
+@RequestMapping("/api/commercials")
 public class CommercialToolController {
 
     private final FileStorageService fileStorageService;
@@ -22,7 +22,7 @@ public class CommercialToolController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createFashion(@RequestPart("commercial") CommercialTool commercialTool,
-                                           @RequestParam(required = false, name = "file") MultipartFile[] file) throws IOException {
+                                           @RequestParam(required = false, name = "file") MultipartFile[] file) {
         List<String> images = fileStorageService.multipleUpload(file, commercialTool.getTitleDescription().getTitle());
         commercialTool.setImages(images);
         return ResponseEntity.ok(commercialToolService.create(commercialTool));

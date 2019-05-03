@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -42,61 +43,66 @@ public class ErrorControllerAdvice {
     }*/
 
     @ExceptionHandler(DataNotFoundException.class)
-    public ResponseEntity<?> handlePasswordUnMatchException(DataNotFoundException exception) {
+    public ResponseEntity<?> handlePasswordUnMatchException(HttpServletRequest request, DataNotFoundException exception) {
         ErrorData data = new ErrorData(ErrorCode.DATA_NOT_FOUND, exception.getMessage());
-        return ResponseEntity.ok(data);
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(data);
     }
 
     @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> handlePasswordUnMatchException(NumberFormatException exception) {
+    public ResponseEntity<?> handlePasswordUnMatchException(HttpServletRequest request, NumberFormatException exception) {
         ErrorData data = new ErrorData(ErrorCode.BAD_ARGUEMENT, "Invalid Parameter passed. Please enter a number");
-        return ResponseEntity.ok(data);
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(data);
     }
 
     @ExceptionHandler(SQLGrammarException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
-    public ResponseEntity<?> handleUserNameNotFoundException(SQLGrammarException exception) {
+    public ResponseEntity<?> handleUserNameNotFoundException(HttpServletRequest request, SQLGrammarException exception) {
         ErrorData data = new ErrorData(ErrorCode.SQL_GRAMMAR, exception.getMessage());
-        return ResponseEntity.ok(data);
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(data);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<?> handleUserNameNotFoundException(UsernameNotFoundException exception) {
+    public ResponseEntity<?> handleUserNameNotFoundException(HttpServletRequest request, UsernameNotFoundException exception) {
         ErrorData data = new ErrorData(ErrorCode.DATA_NOT_FOUND, exception.getMessage());
-        return ResponseEntity.ok(data);
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(data);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<?> handleUserNameNotFoundException(BadCredentialsException exception) {
+    public ResponseEntity<?> handleUserNameNotFoundException(HttpServletRequest request, BadCredentialsException exception) {
         ErrorData data = new ErrorData(ErrorCode.AUTHENTICATION, exception.getMessage());
-        return ResponseEntity.ok(data);
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(data);
     }
 
     @ExceptionHandler(org.hibernate.exception.ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<?> handleUserNameNotFoundException(ConstraintViolationException exception) {
+    public ResponseEntity<?> handleUserNameNotFoundException(HttpServletRequest request, org.hibernate.exception.ConstraintViolationException exception) {
         List<ErrorData> errors = new ArrayList<>();
-        for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
-            String value = (violation.getInvalidValue() == null ? null : violation.getInvalidValue().toString());
-            errors.add(new ErrorData(violation.getPropertyPath().toString(), value, violation.getMessage()));
-        }
-        return ResponseEntity.ok(errors);
+//        for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
+//            String value = (violation.getInvalidValue() == null ? null : violation.getInvalidValue().toString());
+//            errors.add(new ErrorData(violation.getPropertyPath().toString(), value, violation.getMessage()));
+//        }
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(errors);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> handleConstraintException(Exception exception) {
+    public ResponseEntity<?> handleConstraintException(HttpServletRequest request, Exception exception) {
         exception.printStackTrace();
         List<ErrorData> errors = new ArrayList<>();
         ErrorData data = new ErrorData(exception.getClass().getName(), exception.getLocalizedMessage(),
                 exception.getMessage());
         errors.add(data);
-        System.out.println(errors.get(0));
-        System.out.println("Error occured here");
-        return ResponseEntity.ok(errors);
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(errors);
     }
 
     /**
@@ -106,19 +112,20 @@ public class ErrorControllerAdvice {
      */
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException exception) {
+    public ResponseEntity<?> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException exception) {
         List<ErrorData> errors = new ArrayList<>();
-
         for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
             String value = (violation.getInvalidValue() == null ? null : violation.getInvalidValue().toString());
             errors.add(new ErrorData(violation.getPropertyPath().toString(), value, violation.getMessage()));
         }
-        return ResponseEntity.badRequest().body(errors);
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(errors);
     }
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<?> handleBindException(BindException exception) {
-        return ResponseEntity.badRequest().body(convert(exception.getAllErrors()));
+    public ResponseEntity<?> handleBindException(HttpServletRequest request, BindException exception) {
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(convert(exception.getAllErrors()));
     }
 
     /**
@@ -126,8 +133,9 @@ public class ErrorControllerAdvice {
      */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        return ResponseEntity.badRequest().body(convert(exception.getBindingResult().getAllErrors()));
+    public ResponseEntity<?> handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException exception) {
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(convert(exception.getBindingResult().getAllErrors()));
     }
 
     /**
@@ -135,8 +143,9 @@ public class ErrorControllerAdvice {
      */
 
     @ExceptionHandler(ServletRequestBindingException.class)
-    public ResponseEntity<?> handleServletRequestBindingException(ServletRequestBindingException exception) {
-        return ResponseEntity.badRequest().body(new ErrorData(null, null, exception.getMessage()));
+    public ResponseEntity<?> handleServletRequestBindingException(HttpServletRequest request, ServletRequestBindingException exception) {
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(new ErrorData(null, null, exception.getMessage()));
     }
 
     /**
@@ -144,8 +153,9 @@ public class ErrorControllerAdvice {
      */
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        return ResponseEntity.badRequest().body(new ErrorData(null, null, exception.getMessage()));
+    public ResponseEntity<?> handleHttpMessageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException exception) {
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(new ErrorData(null, null, exception.getMessage()));
     }
 
     protected List<ErrorData> convert(List<ObjectError> objectErrors) {
@@ -171,6 +181,15 @@ public class ErrorControllerAdvice {
         }
         return errors;
     }
+
+    private HttpStatus getStatus(HttpServletRequest request) {
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        if (statusCode == null) {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return HttpStatus.valueOf(statusCode);
+    }
+
     /*
     @ExceptionHandler(MethodArgumentNotValidException.class)
 	  @ResponseStatus(HttpStatus.BAD_REQUEST)
