@@ -84,7 +84,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(TOKEN_REFRESH_ENTRY_POINT).permitAll() // Token
                 // refresh
                 // end-point
-                .antMatchers("/console").permitAll() // H2 Console Dash-board -
+                .antMatchers("/console", "/auth/**").permitAll() // H2 Console Dash-board -
                 // only for testing
                 .and().authorizeRequests().antMatchers(TOKEN_BASED_AUTH_ENTRY_POINT).authenticated() // Protected
                 // API
