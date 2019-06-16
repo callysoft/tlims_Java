@@ -26,6 +26,11 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.findAll());
     }
 
+    @GetMapping("parentCategories")
+    public ResponseEntity<?> parentCategories() {
+        return ResponseEntity.ok(categoryService.findAllCategories());
+    }
+
     @PostMapping("create")
     public ResponseEntity<?> createCategory(@RequestPart("category") Category category, @RequestPart(name = "file", required = false) MultipartFile multipartFile) {
         String upload="";

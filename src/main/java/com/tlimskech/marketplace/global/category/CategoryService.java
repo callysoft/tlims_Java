@@ -66,4 +66,8 @@ public class CategoryService implements BaseService<Category, Long> {
     List<Category> findByParentCategory(Long parentId) {
         return categoryRepository.findByParentCategory_Id(parentId);
     }
+
+    List<Category> findAllCategories() {
+        return categoryRepository.findByParentCategoryIsNull();
+    }
 }

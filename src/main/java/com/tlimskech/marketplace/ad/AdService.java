@@ -1,16 +1,27 @@
 package com.tlimskech.marketplace.ad;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.tlimskech.marketplace.auth.user.User;
 import com.tlimskech.marketplace.auth.user.UserService;
-import com.tlimskech.marketplace.core.data.SearchRequest;
+import com.tlimskech.marketplace.core.data.*;
 import com.tlimskech.marketplace.core.service.BaseService;
 import com.tlimskech.marketplace.exception.ApplicationException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.Boolean.FALSE;
 import static org.springframework.util.ObjectUtils.isEmpty;
@@ -19,9 +30,13 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 public class AdService implements BaseService<Ad, Long> {
 
     private final AdRepository adRepository;
+    @PersistenceContext
+    private EntityManager em;
+    private UserService userService;
 
-    public AdService(AdRepository adRepository) {
+    public AdService(AdRepository adRepository, UserService userService) {
         this.adRepository = adRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -30,13 +45,25 @@ public class AdService implements BaseService<Ad, Long> {
         ad.setAuthorized(!isEmpty(ad.getAuthorized()) ? ad.getAuthorized() : FALSE);
         ad.setFeatured(!isEmpty(ad.getFeatured()) ? ad.getFeatured() : FALSE);
         ad.setArchived(!isEmpty(ad.getArchived()) ? ad.getArchived() : FALSE);
+        persistContact(ad);
         return adRepository.save(ad);
+    }
+
+    private void persistContact(Ad ad) {
+        Optional<User> user = userService.findByUsername(UserService.getCurrentUser());
+        user.ifPresent(user1 -> {
+            String name = !StringUtils.isEmpty(user1.getDisplayName()) ? user1.getDisplayName() : user1.getLastName() + " " + user1.getFirstName();
+            String phoneNumber = !StringUtils.isEmpty(ad.getContact().getPhoneNumber()) ? ad.getContact().getPhoneNumber(): user1.getPhoneNumber();
+            Contact contact = Contact.builder().email(user1.getEmail()).phoneNumber(phoneNumber).name(name).build();
+            ad.setContact(contact);
+        });
     }
 
     @Override
     public Ad update(Ad ad) {
         Ad found = adRepository.findById(ad.getId()).orElseThrow(() -> new ApplicationException("Resource not found"));
         found.copyForUpdate(ad);
+        persistContact(ad);
         return adRepository.save(found);
     }
 
@@ -81,14 +108,19 @@ public class AdService implements BaseService<Ad, Long> {
     }
 
     public Page<Ad> featuredAds(SearchRequest request) {
-        return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.createdBy.eq(UserService.getCurrentUser()))
-                .and(QAd.ad.featured.isFalse()), PageRequest.of(request.getPaging().getPage(),
+        BooleanExpression expression = new Ad().predicates(request).and(QAd.ad.createdBy.eq(UserService.getCurrentUser()));
+        if (adRepository.count(expression.and(QAd.ad.featured.isTrue())) >= 4) {
+            expression.and(QAd.ad.featured.isTrue());
+        } else {
+            expression.and(QAd.ad.featured.isFalse());
+        }
+        return adRepository.findAll(expression, PageRequest.of(request.getPaging().getPage(),
                 request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 
     public Page<Ad> archivedAds(SearchRequest request) {
         return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.createdBy.eq(UserService.getCurrentUser()))
-                .and(QAd.ad.archived.isFalse()), PageRequest.of(request.getPaging().getPage(),
+                .and(QAd.ad.archived.isTrue()), PageRequest.of(request.getPaging().getPage(),
                 request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 
@@ -98,4 +130,56 @@ public class AdService implements BaseService<Ad, Long> {
                 PageRequest.of(0, 24, Sort.by(Sort.Direction.DESC, "createdDate")));
     }
 
+    public Page<Ad> findAllAdsAdvance(Ad ad) {
+        return adRepository.findAll(ad.filterPredicates().and(QAd.ad.authorized.isTrue()), ad.getPaging().getPageRequest());
+    }
+
+    public List<DataGroup> groupByPickListCode(String catCode) {
+        return adRepository.findBrandCount(catCode);
+    }
+
+    public Page<Ad> findAdListing(NTuple request) {
+        return adRepository.findAll(queryBuilder(request), request.getPaging().getPageRequest());
+    }
+
+    private BooleanBuilder queryBuilder(NTuple request) {
+        QAd qAd = QAd.ad;
+        BooleanBuilder builder = new BooleanBuilder();
+        if (!StringUtils.isEmpty(request.getCategory())) {
+            builder.and(qAd.category.code.eq(request.getCategory()));
+        }
+        if (!StringUtils.isEmpty(request.getBrands())) {
+            builder.and(qAd.brand.code.in(request.getBrands()));
+        }
+        if (!ObjectUtils.isEmpty(request.getItemCondition())) {
+            if (request.getItemCondition().contains(",")) {
+                List<Condition> collect = Stream.of(request.getItemCondition().split(",")).map(Condition::valueOf).collect(Collectors.toList());
+                builder.and(qAd.itemCondition.in(collect));
+            } else {
+                builder.and(qAd.itemCondition.eq(Condition.valueOf(request.getItemCondition())));
+            }
+        }
+        if (!StringUtils.isEmpty(request.getSubCategory())) {
+            builder.and(qAd.subCategory.code.eq(request.getSubCategory()));
+        }
+        if (!StringUtils.isEmpty(request.getPrice())) {
+            String amount = request.getPrice();
+            if (amount.contains("-")) {
+                String[] amounts = amount.split("-");
+                if (!StringUtils.isEmpty(amounts[0]) && !StringUtils.isEmpty(amounts[1])) {
+                    builder.and(qAd.price.amount.between(new BigDecimal(amounts[0]), new BigDecimal(amounts[1])));
+                }
+                if (!StringUtils.isEmpty(amounts[0]) && StringUtils.isEmpty(amounts[1])) {
+                    builder.and(qAd.price.amount.between(new BigDecimal(amounts[0]), new BigDecimal("9999999999999999999999999999")));
+                }
+                if (StringUtils.isEmpty(amounts[0]) && !StringUtils.isEmpty(amounts[1])) {
+                    builder.and(qAd.price.amount.between(BigDecimal.ZERO, new BigDecimal(amounts[1])));
+                }
+            } else {
+                builder.and(qAd.price.amount.between(new BigDecimal(amount), new BigDecimal("9999999999999999999999999999")));
+            }
+        }
+        builder.and(qAd.authorized.isTrue());
+        return builder;
+    }
 }

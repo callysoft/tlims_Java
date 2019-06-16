@@ -1,5 +1,6 @@
 package com.tlimskech.marketplace.ad;
 
+import com.tlimskech.marketplace.core.data.NTuple;
 import com.tlimskech.marketplace.core.data.SearchRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,5 +51,21 @@ public class AdController {
     @PostMapping("adList")
     public ResponseEntity<?> adList(@RequestBody SearchRequest searchRequest) {
         return ResponseEntity.ok(adService.findAllAds(searchRequest));
+    }
+
+    @PostMapping("adListAdvance")
+    public ResponseEntity<?> adList(@RequestBody Ad ad) {
+        return ResponseEntity.ok(adService.findAllAdsAdvance(ad));
+    }
+
+    @PostMapping("advanceAdListing")
+    public ResponseEntity<?> adListing(@RequestBody NTuple request) {
+        System.out.println(request.toXmlString());
+        return ResponseEntity.ok(adService.findAdListing(request));
+    }
+
+    @GetMapping("categoryCode/{catCode}")
+    public ResponseEntity<?> findById(@PathVariable String catCode) {
+        return ResponseEntity.ok(adService.groupByPickListCode(catCode));
     }
 }

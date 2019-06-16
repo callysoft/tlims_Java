@@ -38,6 +38,7 @@ public class User extends BaseEntity {
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String displayName;
 
     @JsonIgnore
     public String getPassword() {
