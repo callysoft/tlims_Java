@@ -3,6 +3,7 @@ package com.tlimskech.marketplace.core.data;
 import com.tlimskech.marketplace.core.util.Utils;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -14,7 +15,8 @@ import java.util.Date;
 public class BaseModel extends Data implements ICode {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO, generator="native")
+    @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
     @CreationTimestamp
@@ -24,7 +26,7 @@ public class BaseModel extends Data implements ICode {
     @UpdateTimestamp
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date LastModifiedDate;
+    private Date lastModifiedDate;
     @Column(nullable = false)
     private Boolean status;
     @Column(name = "code", nullable = false, unique = true, updatable = false)

@@ -6,7 +6,10 @@ import com.tlimskech.marketplace.auth.user.User;
 import com.tlimskech.marketplace.auth.user.UserService;
 import com.tlimskech.marketplace.core.data.*;
 import com.tlimskech.marketplace.core.service.BaseService;
+import com.tlimskech.marketplace.core.service.GlobalService;
 import com.tlimskech.marketplace.exception.ApplicationException;
+import com.tlimskech.marketplace.global.contact.Contact;
+import com.tlimskech.marketplace.global.contact.ContactRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +30,7 @@ import static java.lang.Boolean.FALSE;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
-public class AdService implements BaseService<Ad, Long> {
+public class AdService extends GlobalService implements BaseService<Ad, Long> {
 
     private final AdRepository adRepository;
     @PersistenceContext
@@ -45,6 +48,7 @@ public class AdService implements BaseService<Ad, Long> {
         ad.setAuthorized(!isEmpty(ad.getAuthorized()) ? ad.getAuthorized() : FALSE);
         ad.setFeatured(!isEmpty(ad.getFeatured()) ? ad.getFeatured() : FALSE);
         ad.setArchived(!isEmpty(ad.getArchived()) ? ad.getArchived() : FALSE);
+        ad.setSponsored(!isEmpty(ad.getSponsored()) ? ad.getSponsored() : FALSE);
         persistContact(ad);
         return adRepository.save(ad);
     }
@@ -53,8 +57,10 @@ public class AdService implements BaseService<Ad, Long> {
         Optional<User> user = userService.findByUsername(UserService.getCurrentUser());
         user.ifPresent(user1 -> {
             String name = !StringUtils.isEmpty(user1.getDisplayName()) ? user1.getDisplayName() : user1.getLastName() + " " + user1.getFirstName();
-            String phoneNumber = !StringUtils.isEmpty(ad.getContact().getPhoneNumber()) ? ad.getContact().getPhoneNumber(): user1.getPhoneNumber();
+            String phoneNumber = !StringUtils.isEmpty(ad.getContact().getPhoneNumber()) ? ad.getContact().getPhoneNumber() : user1.getPhoneNumber();
             Contact contact = Contact.builder().email(user1.getEmail()).phoneNumber(phoneNumber).name(name).build();
+            System.out.println(contact.toXmlString());
+            contact = createContact(contact);
             ad.setContact(contact);
         });
     }
@@ -119,8 +125,13 @@ public class AdService implements BaseService<Ad, Long> {
     }
 
     public Page<Ad> archivedAds(SearchRequest request) {
-        return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.createdBy.eq(UserService.getCurrentUser()))
+        return adRepository.findAll(new Ad().predicates(request)
                 .and(QAd.ad.archived.isTrue()), PageRequest.of(request.getPaging().getPage(),
+                request.getPaging().getLimit(), request.getPaging().getSort()));
+    }
+
+    public Page<Ad> sponsoredAds(SearchRequest request) {
+        return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.sponsored.isTrue()), PageRequest.of(request.getPaging().getPage(),
                 request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 
@@ -182,4 +193,15 @@ public class AdService implements BaseService<Ad, Long> {
         builder.and(qAd.authorized.isTrue());
         return builder;
     }
+
+    public Page<Ad> adHistory(SearchRequest request) {
+        return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.createdBy.eq(request.getSearchTerm())),
+                PageRequest.of(request.getPaging().getPage(), request.getPaging().getLimit(), request.getPaging().getSort()));
+    }
+
+    public Page<Ad> favoriteAds(SearchRequest request, List<Long> ids) {
+        return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.id.in(ids)),
+                PageRequest.of(request.getPaging().getPage(), request.getPaging().getLimit(), request.getPaging().getSort()));
+    }
+
 }

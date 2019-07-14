@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.tlimskech.marketplace.core.data.*;
 import com.tlimskech.marketplace.core.valueobject.TitleDescription;
+import com.tlimskech.marketplace.global.contact.Contact;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.util.ObjectUtils;
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @EqualsAndHashCode(callSuper = true)
 @Active
@@ -25,6 +26,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "ad_category", discriminatorType = DiscriminatorType.STRING)
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Ad extends BaseEntity {
 
     @Valid
@@ -58,11 +60,13 @@ public class Ad extends BaseEntity {
     private Boolean authorized;
     private Boolean featured;
     private Boolean archived;
+    private Boolean sponsored;
     @Transient
     private String amount;
     @Transient
     private String brands;
-    @Embedded
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contact_id")
     private Contact contact;
 
     public BooleanExpression predicates(SearchRequest request) {

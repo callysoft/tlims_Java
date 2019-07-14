@@ -1,9 +1,9 @@
 package com.tlimskech.marketplace.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tlimskech.marketplace.security.SkipPathRequestMatcher;
 import com.tlimskech.marketplace.security.AppAuthProvider;
 import com.tlimskech.marketplace.security.AppTokenAuthenticationProcessingFilter;
+import com.tlimskech.marketplace.security.SkipPathRequestMatcher;
 import com.tlimskech.marketplace.security.login.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

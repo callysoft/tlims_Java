@@ -1,20 +1,19 @@
-package com.tlimskech.marketplace.category.repair;
+package com.tlimskech.marketplace.category.favorite;
 
-import com.tlimskech.marketplace.ad.Ad;
 import com.tlimskech.marketplace.core.data.Active;
+import com.tlimskech.marketplace.core.data.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "cat_repair")
-@DiscriminatorValue("repair")
+@Table(name = "ad_favorites")
 @Active
-public class Repair extends Ad {
+public class Favorite extends BaseEntity {
 
+    private Long postId;
 }

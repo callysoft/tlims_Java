@@ -2,6 +2,7 @@ package com.tlimskech.marketplace.core.data;
 
 import com.tlimskech.marketplace.core.util.Utils;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -18,7 +19,8 @@ import java.util.Date;
 public class BaseEntity extends Data implements ICode{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO, generator="native")
+    @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
     @CreatedBy

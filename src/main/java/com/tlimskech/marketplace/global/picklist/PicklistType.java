@@ -11,7 +11,8 @@ public enum PicklistType implements BaseEnum {
     STORE_CAPACITY("Storage Capacity"), RAM("Ram"), CORES("Cores"), SHAPE("Shape"), DISPLAY("Display"),
     PLATFORM("Platform"), RATING("Rating"), YEAR("Year"), VOLUME("Volume"), FORMULA("Formulation"), SCENT("Scent"),
     TONE("Tone"), SKIN("Skin Type"), BENEFIT("Benefits"), TARGET_AREA("Target Area"),
-    AGE_GROUP("Age Group"), PACKAGE("Package"), PROCESSOR("Processor"), BREED("Breed"), BREED_TYPE("Breed Type");
+    AGE_GROUP("Age Group"), PACKAGE("Package"), PROCESSOR("Processor"), BREED("Breed"), BREED_TYPE("Breed Type"),
+    JOB_TYPE("Job Type"), JOB_EXPERIENCE("Years of Experience");
 
     private String description;
 

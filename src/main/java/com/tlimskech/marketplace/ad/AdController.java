@@ -31,6 +31,11 @@ public class AdController {
         return ResponseEntity.ok(adService.archivedAds(searchRequest));
     }
 
+    @PostMapping("sponsoredAds")
+    public ResponseEntity<?> sponsoredAds(@RequestBody SearchRequest searchRequest) {
+        return ResponseEntity.ok(adService.sponsoredAds(searchRequest));
+    }
+
     @GetMapping("findById/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return ResponseEntity.ok(adService.findById(id));
@@ -67,5 +72,10 @@ public class AdController {
     @GetMapping("categoryCode/{catCode}")
     public ResponseEntity<?> findById(@PathVariable String catCode) {
         return ResponseEntity.ok(adService.groupByPickListCode(catCode));
+    }
+
+    @PostMapping("adHistory")
+    public ResponseEntity<?> adHistory(@RequestBody SearchRequest searchRequest) {
+        return ResponseEntity.ok(adService.findAllAds(searchRequest));
     }
 }
