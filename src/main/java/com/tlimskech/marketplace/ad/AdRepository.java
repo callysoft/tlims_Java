@@ -11,6 +11,6 @@ public interface AdRepository extends JpaRepository<Ad, Long>, QuerydslPredicate
 
     @Query("select new com.tlimskech.marketplace.core.data.DataGroup(d.brand.code, d.brand.name," +
             "COUNT(d)) from Ad d where d.category.code = ?1 and d.brand.code is not null group by " +
-            "d.brand.name having count(d) > 0")
+            "d.brand.code, d.brand.name having count(d) > 0")
     List<DataGroup> findBrandCount(String catCode);
 }
