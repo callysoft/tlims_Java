@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2019 at 10:19 AM
+-- Generation Time: Jul 21, 2019 at 01:49 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -81,7 +81,22 @@ CREATE TABLE `ad_image` (
 --
 
 INSERT INTO `ad_image` (`ad_id`, `images`) VALUES
-(1, 'default.png');
+(1, '156357635524581h8v9nYhiL._SL1500_.jpg'),
+(1, '1563576355259BABY-WALKER-SDL946067192-1-8865f.jpg'),
+(1, '1563576355264New-Arrival-Light-Baby-Children-Walker-Rollover-Prevention-Infant-Walkers-Step-Car-Multifunctional-Toys-Plate-Foldable.jpg_640x640.jpg'),
+(2, '15636027491977bef24519ab864fa2b0dec20a1c110ee.png'),
+(2, '15636027492057d2aa15a363e5d25d67f32dbb81c4eb2.png'),
+(2, '15636027492092019-Toyota-Camry-white-full_color-driver_side_front_quarter.png'),
+(3, '156361896286691FkBl9IKvL._SX466_.jpg'),
+(3, '1563618962874144_borosil_convection_oven_toaster_griller_rottisserie_otg.jpg'),
+(3, '1563618962877koryo-by-big-bazaar-kot2321ss-23-ls-1500-w-otg-oven-toaster-grill-black.jpg'),
+(4, '15636191958611-140Z50J356.jpg'),
+(4, '1563619195868beats.jpg'),
+(4, '1563619195869sound.jpg'),
+(5, '156370174909819NIKMFLXXPRNCRN8RNN_Black_Grey_is.jpg'),
+(5, '156370174910910077737-TCS-drop-front-shoe-box-men.jpg'),
+(5, '15637017491131548951769-1545258704-salomon-s-lab-ultra-best-running-shoe-1529692056.jpg'),
+(5, '1563701749117shoe.jpg');
 
 -- --------------------------------------------------------
 
@@ -111,6 +126,10 @@ CREATE TABLE `ad_item` (
   `negotiable` bit(1) DEFAULT NULL,
   `price_amt` decimal(38,10) DEFAULT NULL,
   `price_ccy` varchar(3) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(255) DEFAULT NULL,
+  `reject_reason` varchar(3000) DEFAULT NULL,
   `sponsored` bit(1) DEFAULT NULL,
   `cat_type_cd` varchar(255) DEFAULT NULL,
   `sub_cat_type` varchar(255) DEFAULT NULL,
@@ -125,8 +144,12 @@ CREATE TABLE `ad_item` (
 -- Dumping data for table `ad_item`
 --
 
-INSERT INTO `ad_item` (`ad_category`, `id`, `last_modified_date`, `code`, `created_by`, `created_date`, `modified_by`, `status`, `version`, `ad_type`, `archived`, `authorized`, `brand_cd`, `brand`, `cat_cd`, `cat`, `featured`, `item_condition`, `negotiable`, `price_amt`, `price_ccy`, `sponsored`, `cat_type_cd`, `sub_cat_type`, `sub_cat_cd`, `sub_cat`, `description`, `title`, `contact_id`) VALUES
-('electronic', 1, '2019-07-14 09:16:04', 'aecd02b92b4392768a9e7aa139f48d5c', 'goody11@gmail.com', '2019-07-14 08:59:48', 'SYSTEM', b'1', 1, NULL, b'0', b'1', NULL, NULL, 'electronics', 'Electronics', b'0', 'USED', b'1', '65000.0000000000', 'NGN', b'0', 'cd_players', 'CD Players', 'electronics_audio', 'Audio & music equipment', '<span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">WARRANTY : 1YR</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">BRAND NEW SATALLITE SMART WI-FI ANDROID TV</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">50 INCHES</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">SMART TV(Connects to internet)</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">ULTRA SLIM LED</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">ULTRA HIGH DEFINITION</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">3 HDMI</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">3 USB</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">VGA</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">STERIO AUDIO</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">ENERGY SAVING</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">PICTURE-IN-PICTURE(PIP)</span><br style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\"><span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">Please call showroom for more enquiries</span>', '*NASCO SMART 50INCHES CURVE ANDROID TV', 1);
+INSERT INTO `ad_item` (`ad_category`, `id`, `last_modified_date`, `code`, `created_by`, `created_date`, `modified_by`, `status`, `version`, `ad_type`, `archived`, `authorized`, `brand_cd`, `brand`, `cat_cd`, `cat`, `featured`, `item_condition`, `negotiable`, `price_amt`, `price_ccy`, `email`, `name`, `phone_number`, `reject_reason`, `sponsored`, `cat_type_cd`, `sub_cat_type`, `sub_cat_cd`, `sub_cat`, `description`, `title`, `contact_id`) VALUES
+('fashion', 1, '2019-07-20 07:03:13', '50d10155ad77ffe9ca8eb01c5cb3b4a1', 'goodluckndumanya1@gmail.com', '2019-07-19 23:45:55', 'SYSTEM', b'1', 1, NULL, b'0', b'0', NULL, NULL, 'fashion', 'Fashion ', b'0', NULL, b'1', '15000.0000000000', 'NGN', 'goody11@gmail.com', 'Ndumanya Goodluck', '09026105532', 'Ad contains malicious content', b'0', 'prams', 'Prams / Rollers', 'fashion_kids', 'Babies & Kids', '<span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">Brand new 2 in 1 baby walker plays music, can be use as feeding table, it is adjustable to the height of your baby on different colours. Call or WhatsApp for your order. We have all baby items in stock</span>', '2 in 1 baby walker', 1),
+('vehicle', 2, '2019-07-20 08:49:20', 'dbe4f818f787084801ba6c940efbabcd', 'goodluckndumanya1@gmail.com', '2019-07-20 07:05:49', 'SYSTEM', b'1', 1, NULL, b'0', b'1', 'toyota', 'Toyota', 'vehicles', 'Vehicles', b'0', NULL, b'1', '8500000.0000000000', 'NGN', 'goodluckndumanya1@gmail.com', 'Ndumanya Goodluck', '09026105532', NULL, b'0', NULL, NULL, 'cars', 'Cars', '<span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal; display: inline !important;\">Well maintained car, fully loaded good and strong engine condition , no hidden fault neat and nice interior accident free low fuel consumption</span>', 'Toyota Highlander 2013', 1),
+('comm_tool', 3, '2019-07-20 11:36:18', '9129640c70e841519e96769849f583eb', 'goodluckndumanya1@gmail.com', '2019-07-20 11:36:03', 'SYSTEM', b'1', 1, NULL, b'0', b'1', NULL, NULL, 'comm_tools', 'Commercial Equipment & Tools', b'0', 'NEW', b'1', '120000.0000000000', 'NGN', 'goody11@gmail.com', 'Ndumanya Goodluck', '09026105532', NULL, b'0', 'curing', 'Curing', 'comm_ovens', 'Industrial ovens', '<p style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">1 YEAR (12MONTHS) WARRANTY NEW IN BOX (12MONTHS)<br>DESCRIPTION ?&nbsp;<br>WARRANTY: 1YR<br>Oven and grill<br>• Auto-ignition<br>• Glass Cover<br>• Stainless steel finish coated in enamel<br>• Gas Top<br>• Power Supply: 220V-240V~50Hz<br>WE DELIVERY @ UR DOORSTEP&nbsp;<br>NOBLE SMART (N.S) @AVENOR is along the Achimota going to circle high way ask of Avenor junction traffic light. To your left, you will find SAMSUNG NASCO MIDEA showroom, before the Abii national bank and before joy FM ?? junction</p><p style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">NOBLE SMART (N.S)@ MALLAM is located 3rd building away from the Mallam station. To your left, you will find SAMSUNG NASCO MIDEA showroom. on your way from Mallam junction</p><p style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">Are you living in Accra or Tema, just call us to deliver at your doorstep at a fee. You only pay upon accepting our product. However, we also deliver to people leaving outside Accra through OA or VIP buses at a fee.</p>', 'COMPLETE SATISFACTION, FAIRMATE 60*60 SILVER BURNER OVEN', 1),
+('electronic', 4, '2019-07-20 11:40:07', '357f8bd76145b2b526657e5299474bca', 'goodluckndumanya1@gmail.com', '2019-07-20 11:39:55', 'SYSTEM', b'1', 1, NULL, b'0', b'1', NULL, NULL, 'electronics', 'Electronics', b'0', 'NEW', b'0', '49000.0000000000', 'NGN', 'goody11@gmail.com', 'Ndumanya Goodluck', '09026105532', NULL, b'0', 'cd_players', 'CD Players', 'electronics_audio', 'Audio & music equipment', '<p style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">ORDER FRESH AND SEALED IN BOX LG 1200WATTS BLUETOOTH WIRELESS 5.1 CHANNEL DVD HOMETHEATER SOUND SYSTM. THIS SOUND SYSTEM COMES WITH LOUND SOUND. QUALITY SOUND SYSTEM WITH LONG LASTING DURABILITY. KINDLY CALL FOR DIRECTION TO THE SHOP OR WHATSAP FOR DELIVERY WITIN ACCRA AND BEYOND. ALL OUR PRODUCT COME UNDER WARRANTY</p><p style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">LHD756<br>LHD756 Home Theater System</p><p style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal;\">Key Features&nbsp;<br>Powerful Sound 1200W<br>Wireless Blutooth Audio Streaming<br>Wireless rear speaker<br>DVD / CD Playback<br>USB Direct Recording &amp; Playback</p>', 'LG 1200WATTS 5.1 DVD CHANNEL BLUETOOTH HOMETHEATER', 1),
+('fashion', 5, '2019-07-21 10:37:39', '22d4df55feae2b9ad4d15a86537075b8', 'goodluckndumanya1@gmail.com', '2019-07-21 10:35:49', 'SYSTEM', b'1', 1, NULL, b'0', b'1', 'adidas', 'Adidas', 'fashion', 'Fashion ', b'0', NULL, b'1', '15000.0000000000', 'NGN', 'goody11@gmail.com', 'Ndumanya Goodluck', '09026105532', NULL, b'0', NULL, NULL, 'fashion_shoes', 'Shoes', '<span style=\"color: rgb(112, 118, 118); font-family: Arial, Helvetica, sans-serif; font-size: 14px; letter-spacing: normal; display: inline !important;\">Quality sneakers, all red</span>', 'New sneakers, All red', 1);
 
 -- --------------------------------------------------------
 
@@ -167,6 +190,13 @@ CREATE TABLE `cat_comm_tool` (
   `id` bigint(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `cat_comm_tool`
+--
+
+INSERT INTO `cat_comm_tool` (`contact_for_price`, `deck_no`, `max_temperature`, `power_source`, `shape`, `tray_no`, `voltage`, `weight`, `id`) VALUES
+(b'0', '4', '90', 'Gas', 'Horizontal', '4', '2500', '1900', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -194,7 +224,7 @@ CREATE TABLE `cat_electronic` (
 --
 
 INSERT INTO `cat_electronic` (`cores_no_cd`, `cores_no`, `elect_make_cd`, `elect_make`, `model_cd`, `model`, `sub_type_cd`, `sub_type`, `pcssr_cd`, `pcssr`, `ram_cd`, `ram`, `id`) VALUES
-(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4);
 
 -- --------------------------------------------------------
 
@@ -221,6 +251,14 @@ CREATE TABLE `cat_fashion` (
   `type_list` longtext,
   `id` bigint(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cat_fashion`
+--
+
+INSERT INTO `cat_fashion` (`closure`, `color`, `display_cd`, `display_nm`, `fashion_size`, `fashion_style`, `fastening`, `features`, `gender`, `stone_cd`, `stone_nm`, `mat`, `mat_2`, `movement_cd`, `movement_nm`, `type_list`, `id`) VALUES
+(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'UNISEX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(NULL, '[{\"code\":\"silver\",\"name\":\"Silver\"}]', NULL, NULL, '[{\"code\":\"35\",\"name\":\"35\"}]', '[{\"code\":\"casual\",\"name\":\"Casual\"}]', '[{\"code\":\"buckle\",\"name\":\"Buckle\"}]', NULL, 'UNISEX', NULL, NULL, '[{\"code\":\"velvet\",\"name\":\"Velvet\"},{\"code\":\"cotton\",\"name\":\"Cotton\"}]', NULL, NULL, NULL, '[{\"code\":\"boot\",\"name\":\"Boot\"},{\"code\":\"sandals\",\"name\":\"Sandals\"}]', 5);
 
 -- --------------------------------------------------------
 
@@ -294,10 +332,51 @@ CREATE TABLE `cat_vehicle` (
   `model` varchar(255) DEFAULT NULL,
   `registered` bit(1) DEFAULT NULL,
   `transmission` varchar(255) DEFAULT NULL,
-  `trim` varchar(255) DEFAULT NULL,
   `year` varchar(255) DEFAULT NULL,
   `id` bigint(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cat_vehicle`
+--
+
+INSERT INTO `cat_vehicle` (`color`, `exchangeable`, `make`, `mileage`, `model`, `registered`, `transmission`, `year`, `id`) VALUES
+('{\"code\":\"black\",\"name\":\"Black\"}', b'1', NULL, '15000', '{\"code\":\"camry\",\"name\":\"Camry\"}', NULL, 'AUTOMATIC', '{\"code\":\"2019\",\"name\":\"2019\"}', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `core_messages`
+--
+
+CREATE TABLE `core_messages` (
+  `id` bigint(20) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `created_date` datetime NOT NULL,
+  `last_modified_date` datetime NOT NULL,
+  `status` bit(1) NOT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  `no_retry` int(11) NOT NULL,
+  `notification_status` varchar(255) DEFAULT NULL,
+  `plain_text` varchar(6000) DEFAULT NULL,
+  `receipient` varchar(255) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `template_name` varchar(255) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `core_messages`
+--
+
+INSERT INTO `core_messages` (`id`, `code`, `created_date`, `last_modified_date`, `status`, `version`, `no_retry`, `notification_status`, `plain_text`, `receipient`, `subject`, `template_name`) VALUES
+(1, 'ba587b10581145a01ef64607aa068c26', '2019-07-19 06:35:02', '2019-07-19 06:47:21', b'0', 10, 0, 'SUCCESS', '<!doctype html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <title>TLims-Kech Market Place</title>\r\n</head>\r\n<body>\r\n<h6>Hi <span>Ndumanya Goodluck</span>!</h6>\r\n\r\n<p>Thank you for joining Tlims-Kech. You can click the link below to confirm your email and start creating unlimited ads.</p>\r\n\r\n<a href=\"/tlims/verify/87c10baef80681e8be064a4dfaba9e6e\">Confirm Email</a>\r\n\r\n</body>\r\n</html>\r\n', 'goodluckndumanya1@gmail.com', 'Email Account Verification', 'registration'),
+(2, '963322692028519c1df633b86c73c7d5', '2019-07-19 08:41:35', '2019-07-19 08:43:06', b'0', 5, 4, 'SUCCESS', '<!doctype html>\r\n<html lang=\"en\">\r\n<body>\r\n<h6>Hi <span>Smart Goody</span>!</h6>\r\n\r\n<p>Thank you for joining Tlims-Kech. You can click the link below to confirm your email and start creating unlimited ads.</p>\r\n\r\n<a href=\"/tlims/verify/0b18eb77de3c5b0bcd17d9da5b6acd6c\">Confirm Email</a>\r\n\r\n</body>\r\n</html>\r\n', 'goody.smart95@gmail.com', 'Email Account Verification', 'registration'),
+(3, '9f5a8c0ecb909bb50e8d8b217e3ba444', '2019-07-20 06:59:23', '2019-07-20 06:59:35', b'0', 1, 0, 'SUCCESS', 'Your ad 2 in 1 baby walker was not been approved due to Ad contains malicious content. Please contact customer support with this code 50d10155ad77ffe9ca8eb01c5cb3b4a1.', 'goodluckndumanya1@gmail.com', 'Ad Approval', NULL),
+(4, '9f00c328220bb6b7aec0c2f34df995f9', '2019-07-20 07:03:13', '2019-07-20 07:03:54', b'0', 1, 0, 'SUCCESS', 'Your ad 2 in 1 baby walker was not been approved due to Ad contains malicious content. Please contact customer support with this code 50d10155ad77ffe9ca8eb01c5cb3b4a1.', 'goodluckndumanya1@gmail.com', 'Ad Approval', NULL),
+(5, 'f799bd1b8d2afdeecdcbb3d4efee015a', '2019-07-20 08:49:20', '2019-07-20 08:49:33', b'0', 1, 0, 'SUCCESS', 'Your ad Toyota Highlander 2013 has successfully been approved and can now be found among Ad listings', 'goodluckndumanya1@gmail.com', 'Ad Approval', NULL),
+(6, 'ba12d0bf1635b67ac80535cb4bb698b2', '2019-07-20 11:36:18', '2019-07-20 11:36:28', b'0', 1, 0, 'SUCCESS', 'Your ad COMPLETE SATISFACTION, FAIRMATE 60*60 SILVER BURNER OVEN has successfully been approved and can now be found among Ad listings', 'goodluckndumanya1@gmail.com', 'Ad Approval', NULL),
+(7, 'a08b30fda745c399105bd3c323c65651', '2019-07-20 11:40:07', '2019-07-20 11:40:17', b'0', 1, 0, 'SUCCESS', 'Your ad LG 1200WATTS 5.1 DVD CHANNEL BLUETOOTH HOMETHEATER has successfully been approved and can now be found among Ad listings', 'goodluckndumanya1@gmail.com', 'Ad Approval', NULL),
+(8, '7797a7280fe27c39bcdb76ab8abdd3e0', '2019-07-21 10:37:39', '2019-07-21 10:37:45', b'0', 1, 0, 'SUCCESS', 'Your ad New sneakers, All red has successfully been approved and can now be found among Ad listings', 'goodluckndumanya1@gmail.com', 'Ad Approval', NULL);
 
 -- --------------------------------------------------------
 
@@ -348,13 +427,13 @@ CREATE TABLE `gb_category` (
 INSERT INTO `gb_category` (`id`, `code`, `created_date`, `last_modified_date`, `status`, `version`, `data_code`, `image`, `description`, `title`, `parent_id`) VALUES
 (5, '048fc6fb092e8e0be1803212b8b91c60', '2019-03-05 19:24:42', '2019-03-05 19:24:42', b'0', 0, 'agriculture', '', NULL, 'Agriculture & Food', NULL),
 (6, 'fad1227f9e0c01d05d4201f8ae1c419c', '2019-03-05 19:25:07', '2019-03-05 19:25:07', b'0', 0, 'animals', '', NULL, 'Animals & Pets', NULL),
-(7, 'a13e5e98b017620c09cc0208042e7e99', '2019-03-05 19:25:25', '2019-03-05 19:25:25', b'1', 0, 'kids', 'toy.jpg', NULL, 'Babies & Kids', NULL),
+(7, 'a13e5e98b017620c09cc0208042e7e99', '2019-03-05 19:25:25', '2019-03-05 19:25:25', b'0', 0, 'kids', 'toy.jpg', NULL, 'Babies & Kids', NULL),
 (8, '894c81cb32e9cb36cca8001fa77beb74', '2019-03-05 19:25:42', '2019-03-05 19:25:42', b'1', 0, 'comm_tools', 'hdd.jpg', NULL, 'Commercial Equipment & Tools', NULL),
 (9, '9eb22ffc0dbf0f2fefb0676d80089cb5', '2019-03-05 19:25:57', '2019-03-05 19:25:57', b'1', 0, 'electronics', 'camera.jpg', NULL, 'Electronics', NULL),
 (10, '0286d2c3b08c2c5bf9e4348089c65cb2', '2019-03-05 19:26:12', '2019-03-05 19:26:12', b'1', 0, 'fashion', 'fashion.jpg', NULL, 'Fashion ', NULL),
 (11, '9c92f28637acac8fee85708a1733392d', '2019-03-05 19:26:27', '2019-03-05 19:26:27', b'1', 0, 'beauty', 'catalog.jpg', NULL, 'Health & Beauty', NULL),
 (12, '902dea1955709ec6a6841f342ceb1da2', '2019-03-05 19:26:47', '2019-03-05 19:26:47', b'1', 0, 'mobile', 'mobile.jpg', NULL, 'Mobile phones & Tablets', NULL),
-(13, '013d1cb0699d91aac5222329135387b9', '2019-03-05 19:26:59', '2019-03-05 19:26:59', b'1', 0, 'estate', 'house.jpg', NULL, 'Real Estate', NULL),
+(13, '013d1cb0699d91aac5222329135387b9', '2019-03-05 19:26:59', '2019-03-05 19:26:59', b'0', 0, 'estate', 'house.jpg', NULL, 'Real Estate', NULL),
 (14, '2ca1db5f981d07bc7622dfd2abb4c92e', '2019-03-05 19:27:11', '2019-03-05 19:27:11', b'1', 0, 'repair', 'hdd.jpg', NULL, 'Repair & Construction', NULL),
 (15, '608d0228e6ffe13440fe84ec2ad0305c', '2019-03-05 19:27:24', '2019-03-05 19:27:24', b'1', 0, 'vehicles', 'car-2.jpg', NULL, 'Vehicles', NULL),
 (16, '71b7eb1ec9334b6aa97f9d720624edf9', '2019-03-05 19:28:40', '2019-03-05 19:28:40', b'1', 0, 'agric_farm', '', NULL, 'Farm machinery & Equipment', 5),
@@ -416,7 +495,14 @@ INSERT INTO `gb_category` (`id`, `code`, `created_date`, `last_modified_date`, `
 (72, '0583e722dc49871da8e3d55cdafc48cd', '2019-07-04 22:37:20', '2019-07-04 22:37:20', b'1', 0, 'oth_repairs', '', NULL, 'Other Repair and Construction Items', 14),
 (73, '0d1dabd8b40dc63874b598c589559ee9', '2019-07-04 22:37:55', '2019-07-04 22:37:55', b'1', 0, 'plumb_water', '', NULL, 'Plumbing and Water Supply', 14),
 (74, '6d5a8b0bccd69122ab8762dee7ad056d', '2019-07-04 22:38:16', '2019-07-04 22:38:16', b'1', 0, 'solar_energy', '', NULL, 'Solar Energy', 14),
-(75, '76d4b9890e727df8919f3d492cecf58f', '2019-07-04 22:38:26', '2019-07-04 22:38:26', b'1', 0, 'windows', '', NULL, 'Windows', 14);
+(75, '76d4b9890e727df8919f3d492cecf58f', '2019-07-04 22:38:26', '2019-07-04 22:38:26', b'1', 0, 'windows', '', NULL, 'Windows', 14),
+(76, '73a988c1e8095f0157e572235988c91f', '2019-07-15 03:49:47', '2019-07-15 03:49:47', b'1', 0, 'cars', '', NULL, 'Cars', 15),
+(77, '005bfb9fefdfc15463338b24d37ce344', '2019-07-15 03:50:16', '2019-07-15 03:50:16', b'1', 0, 'heavy_equip', '', NULL, 'Heavy Equipments', 15),
+(78, '386550479d55e57c2fff17fa61f77151', '2019-07-15 03:51:02', '2019-07-15 03:51:02', b'1', 0, 'mcycles_scooter', '', NULL, 'Motorcycles & Scotters', 15),
+(79, 'e4b09da0e32f3df11b5b81a8f96553a0', '2019-07-15 03:51:31', '2019-07-15 03:51:31', b'1', 0, 'truck_trailer', '', NULL, 'Trucks & Trailers', 15),
+(80, 'f24f1f8de90cc64c324045e1d4d744da', '2019-07-15 03:51:52', '2019-07-15 03:51:52', b'1', 0, 'watercrafts', '', NULL, 'Watercrafts', 15),
+(81, 'b8e5432b04f90f5736c1a016ca2233e1', '2019-07-19 06:58:01', '2019-07-19 06:58:01', b'1', 0, 'fashion_kids', '', NULL, 'Babies & Kids', 10),
+(82, 'a01ac2c3ee5ece104ce447c644dc6e98', '2019-07-19 06:58:59', '2019-07-19 06:58:59', b'1', 0, 'fashion_kids_access', '', NULL, 'Babies & Kids Accessories', 10);
 
 -- --------------------------------------------------------
 
@@ -648,7 +734,38 @@ INSERT INTO `gb_picklist` (`id`, `code`, `created_date`, `last_modified_date`, `
 (292, '585e6ad171188bbe584ce072469c020e', '2019-07-04 22:39:29', '2019-07-04 22:39:29', b'1', 0, 'repair', 'Repair & Construction', NULL, 'r_bricks', 'ITEM_TYPE', 'b_materials', 'Building Materials', NULL, 'Bricks', NULL),
 (293, 'f5a3d764a2a63568a1b8735d0198ee04', '2019-07-04 22:40:11', '2019-07-04 22:40:11', b'1', 0, 'repair', 'Repair & Construction', NULL, 'r_solar_light', 'ITEM_TYPE', 'solar_energy', 'Solar Energy', NULL, 'Solar Lights', NULL),
 (294, '6990720dedf82ef247f4552e2aa15239', '2019-07-04 22:40:33', '2019-07-04 22:40:33', b'1', 0, 'repair', 'Repair & Construction', NULL, 'r_solar_fans', 'ITEM_TYPE', 'solar_energy', 'Solar Energy', NULL, 'Solar Fans', NULL),
-(295, '24e0fe1e5dd5b06ae324d717f91b6a13', '2019-07-04 22:41:01', '2019-07-04 22:41:01', b'1', 0, 'repair', 'Repair & Construction', NULL, 'r_solar_pnls', 'ITEM_TYPE', 'solar_energy', 'Solar Energy', NULL, 'Solar Panels', NULL);
+(295, '24e0fe1e5dd5b06ae324d717f91b6a13', '2019-07-04 22:41:01', '2019-07-04 22:41:01', b'1', 0, 'repair', 'Repair & Construction', NULL, 'r_solar_pnls', 'ITEM_TYPE', 'solar_energy', 'Solar Energy', NULL, 'Solar Panels', NULL),
+(296, 'd17008fb9bc8c7b3bff3e04e3383f611', '2019-07-15 03:52:51', '2019-07-15 03:52:51', b'1', 0, 'vehicles', 'Vehicles', NULL, 'boat', 'ITEM_TYPE', 'watercrafts', 'Watercrafts', NULL, 'Boats', NULL),
+(297, 'bb6229c1ad29a52220adbd70cadf9a23', '2019-07-15 03:53:10', '2019-07-15 03:53:10', b'1', 0, 'vehicles', 'Vehicles', NULL, 'ship', 'ITEM_TYPE', 'watercrafts', 'Watercrafts', NULL, 'Ships', NULL),
+(298, 'cbae147491f4e84c567038931d1a41e7', '2019-07-15 03:54:01', '2019-07-15 03:54:01', b'1', 0, 'vehicles', 'Vehicles', NULL, 'tank_truck', 'ITEM_TYPE', 'truck_trailer', 'Trucks & Trailers', NULL, 'Tank Trucks', NULL),
+(299, '5d6d62724168dea0886bf91ec2566926', '2019-07-15 03:54:15', '2019-07-15 03:54:15', b'1', 0, 'vehicles', 'Vehicles', NULL, 'trailer', 'ITEM_TYPE', 'truck_trailer', 'Trucks & Trailers', NULL, 'Trailers', NULL),
+(300, 'cab30d2466cf36ccd4e6a450a6f11c77', '2019-07-15 03:56:43', '2019-07-15 03:56:43', b'1', 0, 'vehicles', 'Vehicles', NULL, 'honda', 'BRAND', NULL, NULL, NULL, 'Honda', NULL),
+(301, '25258ec8e9da9528d2137204b851a78d', '2019-07-15 03:57:01', '2019-07-15 03:57:01', b'1', 0, 'vehicles', 'Vehicles', NULL, 'toyota', 'BRAND', NULL, NULL, NULL, 'Toyota', NULL),
+(302, '572e5eabfae002d10a0fa5fec4e88c31', '2019-07-15 03:58:54', '2019-07-15 03:58:54', b'1', 0, NULL, NULL, NULL, '2019', 'YEAR', NULL, NULL, NULL, '2019', NULL),
+(303, '79a6e80e5a7a4e59b7dba8420d994175', '2019-07-15 03:59:09', '2019-07-15 03:59:09', b'1', 0, NULL, NULL, NULL, '2018', 'YEAR', NULL, NULL, NULL, '2018', NULL),
+(304, '8712bff64daa30d690890e6b9fb65578', '2019-07-15 04:00:18', '2019-07-15 04:00:18', b'1', 0, 'vehicles', 'Vehicles', NULL, 'bimota', 'ITEM_MAKE', 'mcycles_scooter', 'Motorcycles & Scotters', NULL, 'Bimota', NULL),
+(305, '9846eb2e478b4e129178142567dda128', '2019-07-15 04:00:41', '2019-07-15 04:00:41', b'1', 0, 'vehicles', 'Vehicles', NULL, 'bmw', 'ITEM_MAKE', 'mcycles_scooter', 'Motorcycles & Scotters', NULL, 'BMW', NULL),
+(306, '483769175f25ea84d0f933ba79a1d640', '2019-07-15 04:01:33', '2019-07-15 04:01:33', b'1', 0, 'vehicles', 'Vehicles', 'ITEM_MAKE', '955i', 'MODEL', 'mcycles_scooter', 'Motorcycles & Scotters', NULL, '955i', 305),
+(307, '30134ee17923fa0b1a8fbfb01953ef4f', '2019-07-15 04:02:18', '2019-07-15 04:02:18', b'1', 0, 'vehicles', 'Vehicles', 'ITEM_MAKE', 'sb6', 'MODEL', 'mcycles_scooter', 'Motorcycles & Scotters', NULL, 'SB6', 304),
+(308, 'fba322c68ab380643cb6b3051f11a837', '2019-07-15 04:03:46', '2019-07-15 04:03:46', b'1', 0, 'vehicles', 'Vehicles', NULL, 'bulldozer', 'ITEM_TYPE', 'heavy_equip', 'Heavy Equipments', NULL, 'Bulldozers', NULL),
+(309, 'f18c258e8c814601915a5045cc348bad', '2019-07-15 04:04:07', '2019-07-15 04:04:07', b'1', 0, 'vehicles', 'Vehicles', NULL, 'crane', 'ITEM_TYPE', 'heavy_equip', 'Heavy Equipments', NULL, 'Cranes', NULL),
+(310, 'f4c38e41f0c0eb85b181d6ab435e939d', '2019-07-15 04:04:46', '2019-07-15 04:04:46', b'1', 0, 'vehicles', 'Vehicles', NULL, 'ausa', 'ITEM_MAKE', 'heavy_equip', 'Heavy Equipments', NULL, 'Ausa', NULL),
+(311, '2be0a124ac4b9d8881fdea2c18eed5da', '2019-07-15 04:04:58', '2019-07-15 04:04:58', b'1', 0, 'vehicles', 'Vehicles', NULL, 'ford', 'ITEM_TYPE', 'heavy_equip', 'Heavy Equipments', NULL, 'Ford', NULL),
+(312, 'c480142885f6f34dc7cc8be0a1463ff7', '2019-07-15 04:06:22', '2019-07-15 04:06:22', b'1', 0, 'vehicles', 'Vehicles', NULL, 'honda', 'BRAND', 'cars', 'Cars', NULL, 'Honda', NULL),
+(313, '1af85912440e210bf68d4cd04c9cd29a', '2019-07-15 04:06:43', '2019-07-15 04:06:43', b'1', 0, 'vehicles', 'Vehicles', NULL, 'bmw', 'BRAND', 'cars', 'Cars', NULL, 'BMW', NULL),
+(314, 'f62cb53d4a18a7bceee5093eedae3028', '2019-07-15 04:07:05', '2019-07-15 04:07:05', b'1', 0, 'vehicles', 'Vehicles', NULL, 'toyota', 'BRAND', 'cars', 'Cars', NULL, 'Toyota', NULL),
+(315, 'd9b0736720dc4e6f5e2e8bedff11dae9', '2019-07-15 04:07:36', '2019-07-15 04:07:36', b'1', 0, 'vehicles', 'Vehicles', 'BRAND', 'accord', 'MODEL', 'cars', 'Cars', NULL, 'Accord', 312),
+(316, '60f1445cb73806d3e74eac15034f261d', '2019-07-15 04:08:03', '2019-07-15 04:08:03', b'1', 0, 'vehicles', 'Vehicles', 'BRAND', 'ape', 'MODEL', 'cars', 'Cars', NULL, 'Ape', 312),
+(317, '855936f6ffe9f8344ff71c4dcb8e8362', '2019-07-15 04:08:38', '2019-07-15 04:08:38', b'1', 0, 'vehicles', 'Vehicles', 'BRAND', 'avalon', 'MODEL', 'cars', 'Cars', NULL, 'Avalon', 314),
+(318, 'a238d690765df4d956a0434f83663e3c', '2019-07-15 04:09:06', '2019-07-15 04:09:06', b'1', 0, 'vehicles', 'Vehicles', 'BRAND', 'camry', 'MODEL', 'cars', 'Cars', NULL, 'Camry', 314),
+(319, '39bc8e55a137ad217e3c3334f3b28437', '2019-07-19 07:17:33', '2019-07-19 07:17:33', b'1', 0, 'fashion', 'Fashion ', NULL, 'toys', 'ITEM_TYPE', 'fashion_kids', 'Babies & Kids', NULL, 'Toys', NULL),
+(320, '2230674a03cdb1521112be7a64a2acf6', '2019-07-19 07:17:52', '2019-07-19 07:17:52', b'1', 0, 'fashion', 'Fashion ', NULL, 'clothing', 'ITEM_TYPE', 'fashion_kids', 'Babies & Kids', NULL, 'Clothings', NULL),
+(321, 'b6b2434448a069091a56bebd1b875b0d', '2019-07-19 07:18:33', '2019-07-19 07:18:33', b'1', 0, 'fashion', 'Fashion ', NULL, 'prams', 'ITEM_TYPE', 'fashion_kids', 'Babies & Kids', NULL, 'Prams / Rollers', NULL),
+(322, '6eacc5997aaf76202f309811cf7edb45', '2019-07-19 07:19:30', '2019-07-19 07:19:30', b'1', 0, 'fashion', 'Fashion ', NULL, 'shoes', 'ITEM_TYPE', 'fashion_kids', 'Babies & Kids', NULL, 'Shoes', NULL),
+(323, '1f5d4e1e2a7bbda9b5ca5c0e328deaaf', '2019-07-19 07:20:35', '2019-07-19 07:20:35', b'1', 0, 'fashion', 'Fashion ', NULL, 'furniture', 'ITEM_TYPE', 'fashion_kids', 'Babies & Kids', NULL, 'Furniture', NULL),
+(324, '3b61c13b1ebf8120ace6a84258bb972a', '2019-07-19 07:20:56', '2019-07-19 07:20:56', b'1', 0, 'fashion', 'Fashion ', NULL, 'other', 'ITEM_TYPE', 'fashion_kids', 'Babies & Kids', NULL, 'Other', NULL),
+(325, '7350d58d2818e0a9563758da218e3925', '2019-07-19 07:38:41', '2019-07-19 07:38:41', b'1', 0, 'fashion', 'Fashion ', NULL, '16', 'SIZE', 'fashion_kids', 'Babies & Kids', NULL, '16', NULL),
+(326, 'b8260fce6d182978cfef6538dbac6420', '2019-07-19 07:38:56', '2019-07-19 07:38:56', b'1', 0, 'fashion', 'Fashion ', NULL, '17', 'SIZE', 'fashion_kids', 'Babies & Kids', NULL, '17', NULL);
 
 -- --------------------------------------------------------
 
@@ -671,15 +788,17 @@ CREATE TABLE `sec_user` (
   `last_name` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `phone_number` varchar(255) NOT NULL,
-  `role` varchar(255) DEFAULT NULL
+  `role` varchar(255) DEFAULT NULL,
+  `verified` bit(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sec_user`
 --
 
-INSERT INTO `sec_user` (`id`, `last_modified_date`, `code`, `created_by`, `created_date`, `modified_by`, `status`, `version`, `display_name`, `email`, `first_name`, `last_name`, `password`, `phone_number`, `role`) VALUES
-(1, '2019-06-16 21:33:47', 'd72d357f620229b46ceb360ea407252b', 'SYSTEM', '2019-06-16 21:33:47', 'SYSTEM', b'0', 0, 'Ndumanya Goodluck', 'goody11@gmail.com', 'Goodluck', 'Ndumanya', '$2a$10$CojtG0/Lg5mVzJEzCF6YU.HOE3bxHGIrfI6K7og7bIDVVXvlOk9mu', '09026105532', 'ADMIN');
+INSERT INTO `sec_user` (`id`, `last_modified_date`, `code`, `created_by`, `created_date`, `modified_by`, `status`, `version`, `display_name`, `email`, `first_name`, `last_name`, `password`, `phone_number`, `role`, `verified`) VALUES
+(1, '2019-07-19 06:50:35', '87c10baef80681e8be064a4dfaba9e6e', 'SYSTEM', '2019-07-19 06:35:02', 'SYSTEM', b'0', 1, 'Ndumanya Goodluck', 'goodluckndumanya1@gmail.com', 'Goodluck', 'Ndumanya', '$2a$10$5EGbHdpUD8rsTZrFLoQEgeAAR3jVIoGO7hI8UUpA1ZksYv/HKsLN2', '09026105532', 'MEMBER', b'1'),
+(2, '2019-07-19 08:45:39', '0b18eb77de3c5b0bcd17d9da5b6acd6c', 'SYSTEM', '2019-07-19 08:41:35', 'SYSTEM', b'0', 1, 'Smart Goody', 'goody.smart95@gmail.com', 'Goody', 'Smart', '$2a$10$TBeb5SOmTJHLVZiBrrjeNOmMTYN1y9Gx6C0rEuLC1Yj.kdBSB3JWK', '09026105532', 'MEMBER', b'1');
 
 --
 -- Indexes for dumped tables
@@ -768,6 +887,13 @@ ALTER TABLE `cat_vehicle`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `core_messages`
+--
+ALTER TABLE `core_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UK_a26vomhomfgy80x8hc3oqngpn` (`code`);
+
+--
 -- Indexes for table `core_msg`
 --
 ALTER TABLE `core_msg`
@@ -819,7 +945,13 @@ ALTER TABLE `ad_favorites`
 -- AUTO_INCREMENT for table `ad_item`
 --
 ALTER TABLE `ad_item`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `core_messages`
+--
+ALTER TABLE `core_messages`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `core_msg`
@@ -831,19 +963,19 @@ ALTER TABLE `core_msg`
 -- AUTO_INCREMENT for table `gb_category`
 --
 ALTER TABLE `gb_category`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `gb_picklist`
 --
 ALTER TABLE `gb_picklist`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=296;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=327;
 
 --
 -- AUTO_INCREMENT for table `sec_user`
 --
 ALTER TABLE `sec_user`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
