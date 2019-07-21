@@ -80,7 +80,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(this.securityAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests().antMatchers(FORM_BASED_LOGIN_ENTRY_POINT).permitAll() // Login
-                // end-point
+
                 .antMatchers(TOKEN_REFRESH_ENTRY_POINT).permitAll() // Token
                 // refresh
                 // end-point
@@ -93,10 +93,12 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(buildSecurityLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(buildJwtTokenAuthenticationProcessingFilter(),
                         UsernamePasswordAuthenticationFilter.class);
+        http.csrf()
+                .ignoringAntMatchers("/actuator/**", "/instances/**");
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/assets/**", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
     }
 
