@@ -76,7 +76,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable() // We don't need CSRF for JWT based authentication
+        http.csrf().ignoringAntMatchers("/actuator/**", "/instances/**").disable() // We don't need CSRF for JWT based authentication
                 .exceptionHandling().authenticationEntryPoint(this.securityAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests().antMatchers(FORM_BASED_LOGIN_ENTRY_POINT).permitAll() // Login
@@ -93,8 +93,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(buildSecurityLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(buildJwtTokenAuthenticationProcessingFilter(),
                         UsernamePasswordAuthenticationFilter.class);
-        http.csrf()
-                .ignoringAntMatchers("/actuator/**", "/instances/**");
+//        http.csrf()
+//                .ignoringAntMatchers("/actuator/**", "/instances/**");
     }
 
     @Override
