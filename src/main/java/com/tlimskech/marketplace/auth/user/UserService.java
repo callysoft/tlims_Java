@@ -6,31 +6,57 @@ import com.tlimskech.marketplace.core.data.SearchRequest;
 import com.tlimskech.marketplace.core.service.BaseService;
 import com.tlimskech.marketplace.exception.DataNotFoundException;
 import com.tlimskech.marketplace.exception.PasswordUnMatchException;
+import com.tlimskech.marketplace.notification.Notification;
+import com.tlimskech.marketplace.notification.NotificationService;
 import com.tlimskech.marketplace.security.login.SecurityAuthenticationProvider;
 import com.tlimskech.marketplace.security.login.UserContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class UserService implements BaseService<User, Long> {
 
     private final UserRepository userRepository;
+    private NotificationService notificationService;
+    @Value("${email.verification.link}")
+    private String verificationLink;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, NotificationService notificationService) {
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     @Override
     public User create(User user) {
         user.setStatus(Boolean.TRUE);
-        user.setRole(Role.ADMIN);
+        user.setStatus(Boolean.FALSE);
+        user.setRole(Role.MEMBER);
         user.encryptPassword();
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        sendVerificationMessage(user);
+        return user;
+    }
+
+    private void sendVerificationMessage(User user) {
+        Map<String, String> variables = new HashMap<>();
+        variables.put("link", verificationLink + "/" + user.getCode());
+        variables.put("name", String.format("%s %s", user.getLastName(), user.getFirstName()));
+
+        Notification message = Notification.builder()
+                .content(variables)
+                .receipient(user.getEmail())
+                .subject("Email Account Verification")
+                .templateName("registration")
+                .build();
+        notificationService.prepareAndSendHtmlMessage(message);
     }
 
     @Override
@@ -88,5 +114,11 @@ public class UserService implements BaseService<User, Long> {
             return "SYSTEM";
         UserContext context = (UserContext) authentication.getPrincipal();
         return context.getEmail();
+    }
+
+    public void verifyUser(String code) {
+        User user = userRepository.findByCode(code).orElseThrow(() -> new DataNotFoundException("User not found"));
+        user.setVerified(Boolean.TRUE);
+        userRepository.save(user);
     }
 }

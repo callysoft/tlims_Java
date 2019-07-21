@@ -23,6 +23,7 @@ public class FashionController {
     @PostMapping("/create")
     public ResponseEntity<?> createFashion(@RequestPart("fashion") Fashion fashion,
                                               @RequestParam(required = false, name = "file") MultipartFile[] file) {
+        System.out.println("File Gotten " + file);
         List<String> images = fileStorageService.multipleUpload(file, fashion.getTitleDescription().getTitle());
         fashion.setImages(images);
         return ResponseEntity.ok(fashionService.create(fashion));

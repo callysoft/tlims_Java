@@ -18,7 +18,6 @@ public class Vehicle extends Ad {
     private String make;
     private String model;
     private String year;
-    private String trim;
     private String color;
     @Enumerated(EnumType.STRING)
     private Transmission transmission;

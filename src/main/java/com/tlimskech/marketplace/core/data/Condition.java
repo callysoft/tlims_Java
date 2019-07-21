@@ -2,7 +2,7 @@ package com.tlimskech.marketplace.core.data;
 
 public enum Condition implements BaseEnum {
 
-    NEW("New"), REPLICA("Replica"), USED("Used");
+    NEW("New"), REPLICA("Replica"), USED("Used"), FOREIGN("Foreign used"), LOCAL("Local used");
 
     private String description;
 

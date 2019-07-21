@@ -9,13 +9,15 @@ import com.tlimskech.marketplace.core.service.BaseService;
 import com.tlimskech.marketplace.core.service.GlobalService;
 import com.tlimskech.marketplace.exception.ApplicationException;
 import com.tlimskech.marketplace.global.contact.Contact;
-import com.tlimskech.marketplace.global.contact.ContactRepository;
+import com.tlimskech.marketplace.notification.Notification;
+import com.tlimskech.marketplace.notification.NotificationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
@@ -36,10 +38,12 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
     @PersistenceContext
     private EntityManager em;
     private UserService userService;
+    private NotificationService notificationService;
 
-    public AdService(AdRepository adRepository, UserService userService) {
+    public AdService(AdRepository adRepository, UserService userService, NotificationService notificationService) {
         this.adRepository = adRepository;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -56,12 +60,13 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
     private void persistContact(Ad ad) {
         Optional<User> user = userService.findByUsername(UserService.getCurrentUser());
         user.ifPresent(user1 -> {
-            String name = !StringUtils.isEmpty(user1.getDisplayName()) ? user1.getDisplayName() : user1.getLastName() + " " + user1.getFirstName();
+            String name = !StringUtils.isEmpty(user1.getDisplayName()) ? user1.getDisplayName() : String.format("%s %s", user1.getLastName(), user1.getFirstName());
             String phoneNumber = !StringUtils.isEmpty(ad.getContact().getPhoneNumber()) ? ad.getContact().getPhoneNumber() : user1.getPhoneNumber();
             Contact contact = Contact.builder().email(user1.getEmail()).phoneNumber(phoneNumber).name(name).build();
             System.out.println(contact.toXmlString());
             contact = createContact(contact);
             ad.setContact(contact);
+            ad.setPrimaryContact(ContactDto.copyFromContact(contact));
         });
     }
 
@@ -78,16 +83,31 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
 
     }
 
-    public void activate(Long id) {
-        Ad ad1 = this.findById(id).orElseThrow(() -> new ApplicationException("Resource not found"));
+    public void approve(Ad ad) {
+        Ad ad1 = this.findById(ad.getId()).orElseThrow(() -> new ApplicationException("Resource not found"));
         ad1.setAuthorized(Boolean.TRUE);
+        ad1.setPrimaryContact(ad.getPrimaryContact());
         this.adRepository.save(ad1);
+        emailUser(ad1, String.format("Your ad %s has successfully been approved and can now be found among Ad listings", ad1.getTitleDescription().getTitle()));
     }
 
-    public void deactivate(Long id) {
-        Ad ad1 = this.findById(id).orElseThrow(() -> new ApplicationException("Resource not found"));
+    private void emailUser(Ad ad, String message) {
+        Notification notification = Notification.builder()
+                .plainText(message)
+                .receipient(ad.getCreatedBy())
+                .subject("Ad Approval")
+                .build();
+        notificationService.prepareAndSend(notification);
+    }
+
+    public void reject(Ad ad) {
+        Assert.notNull(ad.getRejectionReason(), "Please enter reason for rejection");
+        Ad ad1 = this.findById(ad.getId()).orElseThrow(() -> new ApplicationException("Resource not found"));
         ad1.setAuthorized(Boolean.FALSE);
+        ad1.setRejectionReason(ad.getRejectionReason());
         this.adRepository.save(ad1);
+        emailUser(ad1, String.format("Your ad %s was not been approved due to %s. Please contact customer support with this code %s.", ad1.getTitleDescription().getTitle(),
+                ad.getRejectionReason(), ad1.getCode()));
     }
 
     @Override
@@ -109,7 +129,7 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
 
     public Page<Ad> pendingAds(SearchRequest request) {
         return adRepository.findAll(new Ad().predicates(request)
-                .and(QAd.ad.authorized.isFalse()), PageRequest.of(request.getPaging().getPage(),
+                .and(QAd.ad.authorized.isFalse()).and(QAd.ad.rejectionReason.isNull()), PageRequest.of(request.getPaging().getPage(),
                 request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 
@@ -195,8 +215,12 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
     }
 
     public Page<Ad> adHistory(SearchRequest request) {
-        return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.createdBy.eq(request.getSearchTerm())),
-                PageRequest.of(request.getPaging().getPage(), request.getPaging().getLimit(), request.getPaging().getSort()));
+        BooleanExpression predicates = new Ad().predicates(request).and(QAd.ad.authorized.isTrue()).or(QAd.ad.authorized.isFalse().and(QAd.ad.rejectionReason.isNotNull()));
+        if (!StringUtils.isBlank(request.getSearchTerm())) {
+            predicates.and(QAd.ad.createdBy.eq(request.getSearchTerm()));
+        }
+        System.out.println("Query " + predicates.toString());
+        return adRepository.findAll(predicates, PageRequest.of(request.getPaging().getPage(), request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 
     public Page<Ad> favoriteAds(SearchRequest request, List<Long> ids) {

@@ -68,6 +68,11 @@ public class Ad extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id")
     private Contact contact;
+    @Embedded
+    @NotNull
+    private ContactDto primaryContact;
+    @Column(length = 3000, name = "reject_reason")
+    private String rejectionReason;
 
     public BooleanExpression predicates(SearchRequest request) {
         QAd qAd = QAd.ad;

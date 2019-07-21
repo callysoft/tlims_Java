@@ -39,6 +39,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
     private String displayName;
+    private Boolean verified;
 
     @JsonIgnore
     public String getPassword() {

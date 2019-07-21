@@ -17,6 +17,8 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -45,6 +47,21 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(DataNotFoundException.class)
     public ResponseEntity<?> handlePasswordUnMatchException(HttpServletRequest request, DataNotFoundException exception) {
         ErrorData data = new ErrorData(ErrorCode.DATA_NOT_FOUND, exception.getMessage());
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(data);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<?> handleMaxUploadSizeExceededException(HttpServletRequest request, MaxUploadSizeExceededException exception) {
+        ErrorData data = new ErrorData(ErrorCode.MAX_FILE_LIMIT, exception.getMessage());
+        HttpStatus status = getStatus(request);
+        return ResponseEntity.status(status).body(data);
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ResponseEntity<?> handleMultipartException(HttpServletRequest request, MultipartException exception) {
+        exception.printStackTrace();
+        ErrorData data = new ErrorData(ErrorCode.MAX_FILE_LIMIT, exception.getMessage());
         HttpStatus status = getStatus(request);
         return ResponseEntity.status(status).body(data);
     }

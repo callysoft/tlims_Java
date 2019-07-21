@@ -41,15 +41,15 @@ public class AdController {
         return ResponseEntity.ok(adService.findById(id));
     }
 
-    @GetMapping("activate/{id}")
-    public ResponseEntity<?> activate(@PathVariable Long id) {
-        adService.activate(id);
+    @PostMapping("approveAd")
+    public ResponseEntity<?> approve(@RequestBody Ad ad) {
+        adService.approve(ad);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("deactivate/{id}")
-    public ResponseEntity<?> deActivate(@PathVariable Long id) {
-        adService.deactivate(id);
+    @PostMapping("rejectAd")
+    public ResponseEntity<?> rejectAd(@RequestBody Ad ad) {
+        adService.reject(ad);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -65,7 +65,6 @@ public class AdController {
 
     @PostMapping("advanceAdListing")
     public ResponseEntity<?> adListing(@RequestBody NTuple request) {
-        System.out.println(request.toXmlString());
         return ResponseEntity.ok(adService.findAdListing(request));
     }
 
@@ -76,6 +75,6 @@ public class AdController {
 
     @PostMapping("adHistory")
     public ResponseEntity<?> adHistory(@RequestBody SearchRequest searchRequest) {
-        return ResponseEntity.ok(adService.findAllAds(searchRequest));
+        return ResponseEntity.ok(adService.adHistory(searchRequest));
     }
 }
