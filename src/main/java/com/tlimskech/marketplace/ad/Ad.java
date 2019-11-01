@@ -29,6 +29,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Ad extends BaseEntity {
 
+    private final static String ALL_CATEGORY = "all";
+
     @Valid
     @Embedded
     private TitleDescription titleDescription;
@@ -73,6 +75,9 @@ public class Ad extends BaseEntity {
     private ContactDto primaryContact;
     @Column(length = 3000, name = "reject_reason")
     private String rejectionReason;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private AdStatus adStatus;
 
     public BooleanExpression predicates(SearchRequest request) {
         QAd qAd = QAd.ad;
@@ -81,7 +86,6 @@ public class Ad extends BaseEntity {
         }
         return qAd.price.amount.stringValue().containsIgnoreCase(request.getSearchTerm())
                 .or(qAd.titleDescription.title.containsIgnoreCase(request.getSearchTerm()))
-                .or(qAd.titleDescription.description.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.brand.name.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.category.name.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.subCategory.name.containsIgnoreCase(request.getSearchTerm()))
@@ -125,5 +129,24 @@ public class Ad extends BaseEntity {
 
         }
         return builder;
+    }
+
+    BooleanBuilder categorizedPredicates(SearchRequest request) {
+        QAd qAd = QAd.ad;
+        BooleanBuilder builder = new BooleanBuilder();
+        System.out.println("Category " + request.getCategory());
+        if (!isEmpty(request.getCategory()) && !ALL_CATEGORY.equals(request.getCategory())) {
+            System.out.println("Entered here");
+            builder.and(qAd.category.code.eq(request.getCategory()));
+        }
+        if (ALL_CATEGORY.equals(request.getCategory())) {
+            System.out.println("Entered here 111");
+            qAd.category.name.containsIgnoreCase(request.getSearchTerm());
+        }
+        return builder.and(qAd.price.amount.stringValue().containsIgnoreCase(request.getSearchTerm())
+                .or(qAd.titleDescription.title.containsIgnoreCase(request.getSearchTerm()))
+                .or(qAd.brand.name.containsIgnoreCase(request.getSearchTerm()))
+                .or(qAd.subCategory.name.containsIgnoreCase(request.getSearchTerm()))
+                .or(qAd.subCatType.name.containsIgnoreCase(request.getSearchTerm())));
     }
 }

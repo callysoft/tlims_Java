@@ -26,4 +26,9 @@ public class AuthController {
         userService.verifyUser(code);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @GetMapping("/fbLogin")
+    public ResponseEntity<?> fbLogin(@RequestParam String code) {
+        return ResponseEntity.ok(userService.fbLogin(code));
+    }
 }

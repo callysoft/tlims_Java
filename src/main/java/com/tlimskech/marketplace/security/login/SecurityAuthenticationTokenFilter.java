@@ -37,7 +37,7 @@ public class SecurityAuthenticationTokenFilter extends AbstractAuthenticationPro
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
+            throws AuthenticationException, IOException {
         System.out.println("Request Method " + request.getMethod());
         if (!HttpMethod.POST.name().equals(request.getMethod())) {// || // !WebUtil.isAjax(request)
             if (logger.isDebugEnabled()) {

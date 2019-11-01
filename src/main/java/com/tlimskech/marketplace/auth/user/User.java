@@ -2,25 +2,29 @@ package com.tlimskech.marketplace.auth.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.tlimskech.marketplace.auth.role.Role;
+import com.tlimskech.marketplace.core.data.Active;
 import com.tlimskech.marketplace.core.data.BaseEntity;
 import com.tlimskech.marketplace.core.data.SearchRequest;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashMap;
+import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "SEC_USER")
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Active
 public class User extends BaseEntity {
 
     @NotBlank
@@ -30,16 +34,14 @@ public class User extends BaseEntity {
     @NotBlank
     @Column(nullable = false, unique = true)
     private String email;
-    @NotBlank
-    @Column(nullable = false)
     private String password;
-    @NotBlank
-    @Column(nullable = false)
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
     private String displayName;
     private Boolean verified;
+    private String imageUrl;
+
 
     @JsonIgnore
     public String getPassword() {
@@ -64,5 +66,16 @@ public class User extends BaseEntity {
                 .or(qUser.lastName.containsIgnoreCase(request.getSearchTerm()))
                 .or(qUser.phoneNumber.containsIgnoreCase(request.getSearchTerm()))
                 .or(qUser.createdDate.stringValue().containsIgnoreCase(request.getSearchTerm()));
+    }
+
+    public static Map<String, String> generateAuthToken(String token, String authority, User user) {
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+//        tokenMap.put("created", String.valueOf(dateCreated));
+        tokenMap.put("scope", authority);
+//        tokenMap.put("email", user.getEmail());
+        tokenMap.put("user", user.toJsonString(false));
+        // tokenMap.put("refreshToken", refreshToken);
+        return tokenMap;
     }
 }

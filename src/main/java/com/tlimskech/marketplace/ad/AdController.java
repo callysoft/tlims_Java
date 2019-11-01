@@ -21,6 +21,11 @@ public class AdController {
         return ResponseEntity.ok(adService.pendingAds(searchRequest));
     }
 
+    @PostMapping("declinedAds")
+    public ResponseEntity<?> declinedAds(@RequestBody SearchRequest searchRequest) {
+        return ResponseEntity.ok(adService.declinedAds(searchRequest));
+    }
+
     @PostMapping("featuredAds")
     public ResponseEntity<?> featuredAds(@RequestBody SearchRequest searchRequest) {
         return ResponseEntity.ok(adService.featuredAds(searchRequest));
@@ -44,6 +49,25 @@ public class AdController {
     @PostMapping("approveAd")
     public ResponseEntity<?> approve(@RequestBody Ad ad) {
         adService.approve(ad);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("activateOrDeactivate")
+    public ResponseEntity<?> activateOrDeactivateAd(@RequestBody Ad ad) {
+        System.out.println(ad.toXmlString());
+        adService.activateOrDeactivate(ad);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("featuredOrNot")
+    public ResponseEntity<?> featuredOrNot(@RequestBody Ad ad) {
+        adService.featuredOrNot(ad);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("sponsoredOrNot")
+    public ResponseEntity<?> sponsoredOrNot(@RequestBody Ad ad) {
+        adService.sponsoredOrNot(ad);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -76,5 +100,10 @@ public class AdController {
     @PostMapping("adHistory")
     public ResponseEntity<?> adHistory(@RequestBody SearchRequest searchRequest) {
         return ResponseEntity.ok(adService.adHistory(searchRequest));
+    }
+
+    @PostMapping("globalSearch")
+    public ResponseEntity<?> globalSearch(@RequestBody SearchRequest searchRequest) {
+        return ResponseEntity.ok(adService.categorizedPredicates(searchRequest));
     }
 }

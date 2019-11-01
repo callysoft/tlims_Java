@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
@@ -53,6 +54,7 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
         ad.setFeatured(!isEmpty(ad.getFeatured()) ? ad.getFeatured() : FALSE);
         ad.setArchived(!isEmpty(ad.getArchived()) ? ad.getArchived() : FALSE);
         ad.setSponsored(!isEmpty(ad.getSponsored()) ? ad.getSponsored() : FALSE);
+        ad.setAdStatus(AdStatus.PENDING);
         persistContact(ad);
         return adRepository.save(ad);
     }
@@ -86,6 +88,7 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
     public void approve(Ad ad) {
         Ad ad1 = this.findById(ad.getId()).orElseThrow(() -> new ApplicationException("Resource not found"));
         ad1.setAuthorized(Boolean.TRUE);
+        ad1.setAdStatus(AdStatus.APPROVED);
         ad1.setPrimaryContact(ad.getPrimaryContact());
         this.adRepository.save(ad1);
         emailUser(ad1, String.format("Your ad %s has successfully been approved and can now be found among Ad listings", ad1.getTitleDescription().getTitle()));
@@ -104,9 +107,10 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
         Assert.notNull(ad.getRejectionReason(), "Please enter reason for rejection");
         Ad ad1 = this.findById(ad.getId()).orElseThrow(() -> new ApplicationException("Resource not found"));
         ad1.setAuthorized(Boolean.FALSE);
+        ad1.setAdStatus(AdStatus.DECLINED);
         ad1.setRejectionReason(ad.getRejectionReason());
         this.adRepository.save(ad1);
-        emailUser(ad1, String.format("Your ad %s was not been approved due to %s. Please contact customer support with this code %s.", ad1.getTitleDescription().getTitle(),
+        emailUser(ad1, String.format("Your ad %s was declined due to %s. Please contact customer support with this code %s.", ad1.getTitleDescription().getTitle(),
                 ad.getRejectionReason(), ad1.getCode()));
     }
 
@@ -122,7 +126,6 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
 
     @Override
     public Page<Ad> findAll(SearchRequest request) {
-//        System.out.println("Current User Logged In: " + UserService.getCurrentUser());
         return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.createdBy.eq(UserService.getCurrentUser())),
                 PageRequest.of(request.getPaging().getPage(), request.getPaging().getLimit(), request.getPaging().getSort()));
     }
@@ -130,6 +133,12 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
     public Page<Ad> pendingAds(SearchRequest request) {
         return adRepository.findAll(new Ad().predicates(request)
                 .and(QAd.ad.authorized.isFalse()).and(QAd.ad.rejectionReason.isNull()), PageRequest.of(request.getPaging().getPage(),
+                request.getPaging().getLimit(), request.getPaging().getSort()));
+    }
+
+    public Page<Ad> declinedAds(SearchRequest request) {
+        return adRepository.findAll(new Ad().predicates(request)
+                .and(QAd.ad.authorized.isFalse()).and(QAd.ad.adStatus.eq(AdStatus.DECLINED)), PageRequest.of(request.getPaging().getPage(),
                 request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 
@@ -163,6 +172,10 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
 
     public Page<Ad> findAllAdsAdvance(Ad ad) {
         return adRepository.findAll(ad.filterPredicates().and(QAd.ad.authorized.isTrue()), ad.getPaging().getPageRequest());
+    }
+
+    public Page<Ad> categorizedPredicates(SearchRequest request) {
+        return adRepository.findAll(new Ad().categorizedPredicates(request).and(QAd.ad.authorized.isTrue()), request.getPaging().getPageRequest());
     }
 
     public List<DataGroup> groupByPickListCode(String catCode) {
@@ -215,7 +228,7 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
     }
 
     public Page<Ad> adHistory(SearchRequest request) {
-        BooleanExpression predicates = new Ad().predicates(request).and(QAd.ad.authorized.isTrue()).or(QAd.ad.authorized.isFalse().and(QAd.ad.rejectionReason.isNotNull()));
+        BooleanExpression predicates = new Ad().predicates(request).and(QAd.ad.adStatus.eq(AdStatus.APPROVED));
         if (!StringUtils.isBlank(request.getSearchTerm())) {
             predicates.and(QAd.ad.createdBy.eq(request.getSearchTerm()));
         }
@@ -226,6 +239,24 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
     public Page<Ad> favoriteAds(SearchRequest request, List<Long> ids) {
         return adRepository.findAll(new Ad().predicates(request).and(QAd.ad.id.in(ids)),
                 PageRequest.of(request.getPaging().getPage(), request.getPaging().getLimit(), request.getPaging().getSort()));
+    }
+
+    public void activateOrDeactivate(Ad ad) {
+        Ad found = adRepository.findById(ad.getId()).orElseThrow(() -> new ApplicationException("Resource not found"));
+        found.setStatus(found.getStatus() ? FALSE : TRUE);
+        adRepository.save(found);
+    }
+
+    public void featuredOrNot(Ad ad) {
+        Ad found = adRepository.findById(ad.getId()).orElseThrow(() -> new ApplicationException("Resource not found"));
+        found.setFeatured(found.getFeatured() ? FALSE : TRUE);
+        adRepository.save(found);
+    }
+
+    public void sponsoredOrNot(Ad ad) {
+        Ad found = adRepository.findById(ad.getId()).orElseThrow(() -> new ApplicationException("Resource not found"));
+        found.setSponsored(found.getSponsored() ? FALSE : TRUE);
+        adRepository.save(found);
     }
 
 }

@@ -19,4 +19,7 @@ public interface BaseService<T, ID> {
     Optional<T> findById(ID id);
     default Page<T> findAll(SearchRequest request, Pageable pageable) { return Page.empty(); }
     default Page<T> findAll(SearchRequest request) { return Page.empty(); }
+    default boolean exists(T t) {
+        return false;
+    }
 }

@@ -13,12 +13,14 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -37,34 +39,26 @@ public class SecurityAuthenticationSuccessHandler implements AuthenticationSucce
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
         UserContext userContext = (UserContext) authentication.getPrincipal();
 
         String accessToken = appTokenUtil.generateToken(userContext);
         String username = appTokenUtil.getUsernameFromToken(accessToken);
-        Date dateCreated = appTokenUtil.getCreatedDateFromToken(accessToken);
         List<String> authorities = appTokenUtil.getAuthoritiesFromToken(accessToken);
         Set<String> authoritiesSet = new HashSet<>(authorities);
 //        System.out.println("Roles: "+list);
 
         User user = userService.findByUsername(username).orElseThrow(() -> new ApplicationException("User not found"));
 
-        String authority = authoritiesSet.stream().collect(Collectors.joining(","));
+        String authority = String.join(",", authoritiesSet);
         // String refreshToken = JwtTokenUtil.refreshToken(userContext);
         // System.out.println(authority);
 
-        Map<String, String> tokenMap = new HashMap<>();
-        tokenMap.put("token", accessToken);
-//        tokenMap.put("created", String.valueOf(dateCreated));
-        tokenMap.put("scope", authority);
-//        tokenMap.put("email", user.getEmail());
-        tokenMap.put("user", user.toJsonString(false));
-        // tokenMap.put("refreshToken", refreshToken);
+        Map<String, String> tokenMap =  User.generateAuthToken(accessToken, authority, user);
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         mapper.writeValue(response.getWriter(), tokenMap);
-
         clearAuthenticationAttributes(request);
     }
 

@@ -1,15 +1,5 @@
 runtime: java
 env: flex
-
-runtime_config:  # Optional
-  jdk: openjdk8
-
 handlers:
-- url: /.*
-  script: this field is required, but ignored
-
-manual_scaling:
-  instances: 1
-
-readiness_check:
-  app_start_timeout_sec: 100000
+  - url: /.*
+    script: this field is required, but ignored

@@ -54,4 +54,10 @@ public class UserController {
     public ResponseEntity<?> listUserAds(@RequestBody SearchRequest searchRequest) {
         return ResponseEntity.ok(adService.findAll(searchRequest));
     }
+
+    @GetMapping("getCurrentUserDetails")
+    public ResponseEntity<?> getCurrentUserDetails() {
+        System.out.println(UserService.getCurrentUser());
+        return ResponseEntity.ok(userService.findByUsername(UserService.getCurrentUser()));
+    }
 }

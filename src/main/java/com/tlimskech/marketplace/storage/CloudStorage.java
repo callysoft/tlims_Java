@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Profile("prod")
+@Profile("mysql")
 public class CloudStorage implements FileStorageService {
 
     @Value("${upload.dir}")

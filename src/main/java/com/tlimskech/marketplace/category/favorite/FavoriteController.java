@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,10 +24,13 @@ public class FavoriteController {
 
     @PostMapping("/create")
     public ResponseEntity<?> add(@RequestBody Favorite favorite) {
-        if (!favoriteRepository.findByPostIdAndCreatedBy(favorite.getPostId(), UserService.getCurrentUser()).isPresent()) {
-            favorite = favoriteRepository.save(favorite);
+        Optional<Favorite> favorite1 = favoriteRepository.findByPostIdAndCreatedBy(favorite.getPostId(), UserService.getCurrentUser());
+        if (!favorite1.isPresent()) {
+            favoriteRepository.save(favorite);
+            return ResponseEntity.ok("Post successfully added to favorites");
         }
-        return ResponseEntity.ok(favorite);
+        favoriteRepository.delete(favorite1.get());
+        return ResponseEntity.ok("Post successfully removed from favorites");
     }
 
     @GetMapping("/added/{postId}")
