@@ -13,6 +13,7 @@ import com.tlimskech.marketplace.notification.NotificationService;
 import com.tlimskech.marketplace.security.login.SecurityAuthenticationProvider;
 import com.tlimskech.marketplace.security.login.UserContext;
 import com.tlimskech.marketplace.security.utils.AppTokenUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserService implements BaseService<User, Long> {
 
     private final UserRepository userRepository;
@@ -150,7 +152,7 @@ public class UserService implements BaseService<User, Long> {
 
     public Map<String, String> fbLogin(String authorizationCode) {
         String[] fields = {"name", "email", "first_name", "last_name", "picture"};
-        System.out.println(authorizationCode);
+        log.info("Facebook authorization code: {}", authorizationCode);
 
         UriComponents builder = UriComponentsBuilder.fromHttpUrl(fbUri)
                 .queryParam("fields", String.join(",", fields))
@@ -158,8 +160,6 @@ public class UserService implements BaseService<User, Long> {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        System.out.println(builder.toUriString());
         ResponseEntity<FbUser> exchange = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, FbUser.class);
         if (ObjectUtils.isEmpty(exchange.getBody())) {
             throw new DataNotFoundException("User details not found");
@@ -172,7 +172,6 @@ public class UserService implements BaseService<User, Long> {
             return generateToken(userOptional.get());
         }
         User saved = create(user);
-        System.out.println(exchange.getBody().toXmlString());
         return generateToken(saved);
     }
 

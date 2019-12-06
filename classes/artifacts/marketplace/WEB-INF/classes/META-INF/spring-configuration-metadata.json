@@ -1,0 +1,36 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.tlimskech.marketplace.security.utils.AppJwtSettings",
+      "name": "tlims.security.jwt",
+      "type": "com.tlimskech.marketplace.security.utils.AppJwtSettings"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.tlimskech.marketplace.security.utils.AppJwtSettings",
+      "name": "tlims.security.jwt.refresh-token-exp-time",
+      "description": "{@link JwtToken} can be refreshed during this timeframe.",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.tlimskech.marketplace.security.utils.AppJwtSettings",
+      "name": "tlims.security.jwt.token-expiration-time",
+      "description": "{@link JwtToken} will expire after this time.",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.tlimskech.marketplace.security.utils.AppJwtSettings",
+      "name": "tlims.security.jwt.token-issuer",
+      "description": "Token issuer.",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.tlimskech.marketplace.security.utils.AppJwtSettings",
+      "name": "tlims.security.jwt.token-signing-key",
+      "description": "Key is used to sign {@link JwtToken}.",
+      "type": "java.lang.String"
+    }
+  ]
+}
