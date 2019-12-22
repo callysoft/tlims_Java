@@ -59,6 +59,10 @@ public class PicklistService implements BaseService<Picklist, Long> {
         return picklistRepository.findByPicklistType(picklistType);
     }
 
+    List<Picklist> findByPickListTypeAndCategory(PicklistType picklistType, String catCode) {
+        return picklistRepository.findByPicklistTypeAndCategory_Code(picklistType, catCode);
+    }
+
     Iterable<Picklist> findByListTypeAndCategoryAndParent(String listType, String catCode, String subcatCode, String parentCode) {
         QPicklist qPicklist = QPicklist.picklist;
         BooleanExpression expression = qPicklist.picklistType.eq(PicklistType.valueOf(listType))

@@ -46,6 +46,11 @@ public class PicklistController {
         return ResponseEntity.ok(picklistService.findByPickListType(PicklistType.valueOf(picklistType)));
     }
 
+    @GetMapping("findByPickListTypeAndCategory/{picklistType}/{catCode}")
+    public ResponseEntity<?> findByPickListTypeAndCategory(@PathVariable("picklistType") String picklistType, @PathVariable("catCode") String catCode) {
+        return ResponseEntity.ok(picklistService.findByPickListTypeAndCategory(PicklistType.valueOf(picklistType), catCode));
+    }
+
     @GetMapping("findByListTypeAndCategory/{listType}/{catCode}/{subcatCode}")
     public ResponseEntity<?> findByListTypeAndCategory(@PathVariable("listType") String listType, @PathVariable("catCode") String catCode,
                                                        @PathVariable("subcatCode") String subcatCode) {

@@ -10,6 +10,7 @@ public interface PicklistRepository extends JpaRepository<Picklist, Long>, Query
     List<Picklist> findByParentList_Id(Long parentId);
     List<Picklist> findByPicklistType(PicklistType picklistType);
     List<Picklist> findByPicklistTypeAndCategory_CodeAndSubCategory_Code(PicklistType picklistType, String catCode, String subCatCode);
+    List<Picklist> findByPicklistTypeAndCategory_Code(PicklistType picklistType, String catCode);
     List<Picklist> findByPicklistTypeAndCategory_CodeAndSubCategory_CodeAndParentList_PickListcode_DataCode(PicklistType picklistType,
                                                                                                             String catCode, String subCatCode, String parentCode);
 }

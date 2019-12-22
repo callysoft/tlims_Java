@@ -3,6 +3,7 @@ package com.tlimskech.marketplace.category.pet;
 import com.tlimskech.marketplace.ad.Ad;
 import com.tlimskech.marketplace.category.fashion.Gender;
 import com.tlimskech.marketplace.core.data.Active;
+import com.tlimskech.marketplace.core.data.CodeValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,7 +19,13 @@ public class Pet extends Ad {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private String age;
-    private String breed;
-    private String breedType;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "age_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "age_nm"))})
+    private CodeValue age;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "breed_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "breed_nm"))})
+    private CodeValue breed;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "brdtyp_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "brdtyp_nm"))})
+    private CodeValue breedType;
 }

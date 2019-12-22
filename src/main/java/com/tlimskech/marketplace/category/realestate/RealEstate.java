@@ -2,10 +2,13 @@ package com.tlimskech.marketplace.category.realestate;
 
 import com.tlimskech.marketplace.ad.Ad;
 import com.tlimskech.marketplace.core.data.Active;
+import com.tlimskech.marketplace.core.data.CodeValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -21,7 +24,9 @@ public class RealEstate extends Ad {
     @Enumerated(EnumType.STRING)
     private FurnishType furnishType;
     private String capacity;
-    private String[] facilities;
+    @ElementCollection
+    @CollectionTable(name = "cat_real_estate_fcty")
+    private List<CodeValue> facilities = new ArrayList<>();
     private Boolean contactForPrice;
     private Integer totalRoom;
     private Integer totalBathroom;

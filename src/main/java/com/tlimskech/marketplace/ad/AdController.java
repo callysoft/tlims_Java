@@ -36,7 +36,7 @@ public class AdController {
         return ResponseEntity.ok(adService.archivedAds(searchRequest));
     }
 
-    @PostMapping("sponsoredAds")
+    @PostMapping("adSponsored")
     public ResponseEntity<?> sponsoredAds(@RequestBody SearchRequest searchRequest) {
         return ResponseEntity.ok(adService.sponsoredAds(searchRequest));
     }
@@ -65,7 +65,7 @@ public class AdController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("sponsoredOrNot")
+    @PostMapping("toggleSponsored")
     public ResponseEntity<?> sponsoredOrNot(@RequestBody Ad ad) {
         adService.sponsoredOrNot(ad);
         return ResponseEntity.ok(HttpStatus.OK);

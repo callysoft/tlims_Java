@@ -3,6 +3,8 @@ package com.tlimskech.marketplace.category.favorite;
 import com.tlimskech.marketplace.ad.AdService;
 import com.tlimskech.marketplace.auth.user.UserService;
 import com.tlimskech.marketplace.core.data.SearchRequest;
+import com.tlimskech.marketplace.exception.ApplicationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,4 +45,12 @@ public class FavoriteController {
         List<Long> longList = favoriteRepository.findByCreatedBy(UserService.getCurrentUser()).stream().map(Favorite::getPostId).collect(Collectors.toList());
         return ResponseEntity.ok(adService.favoriteAds(request, longList));
     }
+
+    @DeleteMapping("/remove/{postId}")
+    public ResponseEntity<?> remove(@PathVariable Long postId) {
+        Favorite favorite = favoriteRepository.findByPostIdAndCreatedBy(postId, UserService.getCurrentUser()).orElseThrow(() -> new ApplicationException("Resource not found"));
+        favoriteRepository.delete(favorite);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
 }

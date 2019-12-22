@@ -143,13 +143,8 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
     }
 
     public Page<Ad> featuredAds(SearchRequest request) {
-        BooleanExpression expression = new Ad().predicates(request).and(QAd.ad.createdBy.eq(UserService.getCurrentUser()));
-        if (adRepository.count(expression.and(QAd.ad.featured.isTrue())) >= 4) {
-            expression.and(QAd.ad.featured.isTrue());
-        } else {
-            expression.and(QAd.ad.featured.isFalse());
-        }
-        return adRepository.findAll(expression, PageRequest.of(request.getPaging().getPage(),
+        return adRepository.findAll(new Ad().predicates(request)
+                .and(QAd.ad.featured.isTrue()), PageRequest.of(request.getPaging().getPage(),
                 request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 
@@ -232,7 +227,7 @@ public class AdService extends GlobalService implements BaseService<Ad, Long> {
         if (!StringUtils.isBlank(request.getSearchTerm())) {
             predicates.and(QAd.ad.createdBy.eq(request.getSearchTerm()));
         }
-        System.out.println("Query " + predicates.toString());
+//        System.out.println("Query " + predicates.toString());
         return adRepository.findAll(predicates, PageRequest.of(request.getPaging().getPage(), request.getPaging().getLimit(), request.getPaging().getSort()));
     }
 

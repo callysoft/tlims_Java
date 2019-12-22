@@ -19,12 +19,7 @@ public class Electronic extends Ad {
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "elect_make_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "elect_make"))})
     private CodeValue electMake;
-    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "model_cd")),
-            @AttributeOverride(name = "name", column = @Column(name = "model"))})
-    private CodeValue electModel;
-    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "sub_type_cd")),
-            @AttributeOverride(name = "name", column = @Column(name = "sub_type"))})
-    private CodeValue electSubType;
+    private String model;
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "pcssr_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "pcssr"))})
     private CodeValue processor;
@@ -34,4 +29,7 @@ public class Electronic extends Ad {
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "ram_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "ram"))})
     private CodeValue ram;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "capacity_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "capacity"))})
+    private CodeValue capacity;
 }

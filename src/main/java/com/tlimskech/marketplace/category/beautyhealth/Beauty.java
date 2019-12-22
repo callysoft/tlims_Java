@@ -3,6 +3,7 @@ package com.tlimskech.marketplace.category.beautyhealth;
 import com.tlimskech.marketplace.ad.Ad;
 import com.tlimskech.marketplace.category.fashion.Gender;
 import com.tlimskech.marketplace.core.data.Active;
+import com.tlimskech.marketplace.core.data.CodeValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,14 +20,30 @@ public class Beauty extends Ad {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private String color;
-    private String scent;
-    private String formulation;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "scent_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "scent"))})
+    private CodeValue scent;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "formula_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "formula"))})
+    private CodeValue formulation;
     private String volume;
-    private String tone;
-    private String skinType;
-    private String targetArea;
-    private String benefits;
-    private String ageGroup;
-    private String vPackage;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "tone_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "tone"))})
+    private CodeValue tone;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "skin_type_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "skin_type"))})
+    private CodeValue skinType;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "trgt_area_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "trgt_area"))})
+    private CodeValue targetArea;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "benefits_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "benefits"))})
+    private CodeValue benefits;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "age_grp_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "age_grp"))})
+    private CodeValue ageGroup;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "vPackage_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "vPackage"))})
+    private CodeValue vPackage;
 
 }
