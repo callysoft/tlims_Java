@@ -2,13 +2,11 @@ package com.tlimskech.marketplace.category.job;
 
 import com.tlimskech.marketplace.ad.Ad;
 import com.tlimskech.marketplace.core.data.Active;
+import com.tlimskech.marketplace.core.data.CodeValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -19,8 +17,12 @@ import javax.persistence.Table;
 public class Job extends Ad {
 
     private String companyName;
-    private String jobType;
-    private String minimumExp;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "job_type_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "job_type"))})
+    private CodeValue jobType;
+    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "min_exp_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "min_exp"))})
+    private CodeValue minimumExp;
     @Column(length = 5000)
     private String responsibilities;
     @Column(length = 5000)

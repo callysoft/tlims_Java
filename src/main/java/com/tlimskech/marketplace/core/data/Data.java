@@ -3,12 +3,13 @@
  */
 package com.tlimskech.marketplace.core.data;
 
+import javax.xml.bind.JAXB;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
-import javax.xml.bind.JAXB;
 import java.io.*;
 
 /**
@@ -47,6 +48,11 @@ public class Data implements Serializable {
         return null;
     }
 
+
+    /**
+     * @return
+     * @throws IOException
+     */
     public String serialize() throws IOException {
         ByteArrayOutputStream w = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(w);

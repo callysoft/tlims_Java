@@ -29,6 +29,11 @@ public class ListItemController {
         return ResponseEntity.ok(listItemService.findAll(searchRequest, searchRequest.getPaging().getPageRequest()));
     }
 
+    @GetMapping("findByListType/{itemType}")
+    public ResponseEntity<?> findByListType(@PathVariable("itemType") String itemType) {
+        return ResponseEntity.ok(listItemService.findByItemType(itemType));
+    }
+
     @GetMapping("findByListTypeAndSubcategory/{itemType}/{subCode}")
     public ResponseEntity<?> findByListTypeAndSubcategory(@PathVariable("itemType") String itemType,
                                                                 @PathVariable("subCode") String subCode) {

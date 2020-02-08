@@ -78,6 +78,7 @@ public class Ad extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     private AdStatus adStatus;
+    private String[] tags;
 
     public BooleanExpression predicates(SearchRequest request) {
         QAd qAd = QAd.ad;
@@ -134,13 +135,10 @@ public class Ad extends BaseEntity {
     BooleanBuilder categorizedPredicates(SearchRequest request) {
         QAd qAd = QAd.ad;
         BooleanBuilder builder = new BooleanBuilder();
-        System.out.println("Category " + request.getCategory());
         if (!isEmpty(request.getCategory()) && !ALL_CATEGORY.equals(request.getCategory())) {
-            System.out.println("Entered here");
             builder.and(qAd.category.code.eq(request.getCategory()));
         }
         if (ALL_CATEGORY.equals(request.getCategory())) {
-            System.out.println("Entered here 111");
             qAd.category.name.containsIgnoreCase(request.getSearchTerm());
         }
         return builder.and(qAd.price.amount.stringValue().containsIgnoreCase(request.getSearchTerm())

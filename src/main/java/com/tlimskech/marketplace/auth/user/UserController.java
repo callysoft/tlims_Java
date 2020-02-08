@@ -45,6 +45,12 @@ public class UserController {
         return ResponseEntity.ok(userService.findByUsername(username));
     }
 
+    @PostMapping("/activateOrDeactivateUser")
+    public ResponseEntity<?> activateOrDeactivateUser(@RequestBody User user) {
+        userService.activateOrDeactivateUser(user);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @PostMapping("/findAll")
     public ResponseEntity<?> findAllUser(@RequestBody SearchRequest searchRequest) {
         return ResponseEntity.ok(userService.findAll(searchRequest, searchRequest.getPaging().getPageRequest()));

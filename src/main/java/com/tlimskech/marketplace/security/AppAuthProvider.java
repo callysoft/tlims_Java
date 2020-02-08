@@ -38,7 +38,6 @@ public class AppAuthProvider implements AuthenticationProvider {
 
         List<GrantedAuthority> grantedAuthorities = authorities.stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-
         UserContext userContext = UserContext.create(user.getEmail(), grantedAuthorities);
         return new AppAuthenticationToken(userContext, userContext.getAuthorities());
     }

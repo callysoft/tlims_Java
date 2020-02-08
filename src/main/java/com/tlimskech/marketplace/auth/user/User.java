@@ -42,7 +42,6 @@ public class User extends BaseEntity {
     private Boolean verified;
     private String imageUrl;
 
-
     @JsonIgnore
     public String getPassword() {
         return password;
@@ -53,9 +52,9 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public String encryptPassword() {
+    public void encryptPassword() {
         PasswordEncoder ENCODER = new BCryptPasswordEncoder();
-        return this.password = ENCODER.encode(password);
+        this.password = ENCODER.encode(password);
     }
 
     public BooleanExpression searchPredicate(SearchRequest request) {

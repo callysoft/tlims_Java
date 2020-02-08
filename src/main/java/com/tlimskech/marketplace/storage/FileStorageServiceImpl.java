@@ -30,11 +30,11 @@ public class FileStorageServiceImpl implements FileStorageService {
             return "default.png";
         }
         String newFileName = System.currentTimeMillis() + file.getOriginalFilename();
-        notNull(file.getInputStream(), "Inputstream must not be null to build file");
+        notNull(file.getInputStream(), "InputStream must not be null to build file");
 
         InputStream inputStream = file.getInputStream();
-        File newfile = new File(directory + SLASH + newFileName);
-        OutputStream outputStream = FileUtils.openOutputStream(newfile);
+        File newFile = new File(directory + SLASH + newFileName);
+        OutputStream outputStream = FileUtils.openOutputStream(newFile);
         IOUtils.copyLarge(inputStream, outputStream);
         IOUtils.closeQuietly(inputStream);
         IOUtils.closeQuietly(outputStream);

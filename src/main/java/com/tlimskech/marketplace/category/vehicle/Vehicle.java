@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Active
 public class Vehicle extends Ad {
 
-    private String make;
     private String model;
     private String year;
     private String color;

@@ -39,12 +39,14 @@ public class SecurityAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
 
         User user = userService.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Authentication Failed. Username or Password not valid."));
+                .orElseThrow(() -> new UsernameNotFoundException("Authentication Failed! Username or Password is not valid"));
 
         if (!ENCODER.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("Authentication Failed. Username or Password not valid.");
+            throw new BadCredentialsException("Authentication Failed. Username or Password not valid");
         }
 
+        userService.findVerifiedUser(username).orElseThrow(() -> new UsernameNotFoundException("Please verify your account before you proceed"));
+        userService.findActiveUser(username).orElseThrow(() -> new UsernameNotFoundException("Your Account is Inactive. Please Contact the System Administrator"));
 
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils.createAuthorityList(user.getRole().getDescription());
         grantedAuthorities.forEach(g -> System.out.println(g.getAuthority()));

@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
@@ -124,6 +125,14 @@ public class UserService implements BaseService<User, Long> {
         return Optional.ofNullable(userRepository.findByEmail(email));
     }
 
+    public Optional<User> findVerifiedUser(String email) {
+        return userRepository.findByEmailAndVerifiedIsTrue(email);
+    }
+
+    public Optional<User> findActiveUser(String email) {
+        return userRepository.findByEmailAndStatusIsTrue(email);
+    }
+
     public void changePassword(ChangePasswordRequest passwordRequest) {
         User user = findByUsername(getCurrentUser()).orElseThrow(() -> new DataNotFoundException("User not found"));
         boolean matches = SecurityAuthenticationProvider.ENCODER.matches(passwordRequest.getCurrentPassword(), user.getPassword());
@@ -153,7 +162,6 @@ public class UserService implements BaseService<User, Long> {
     public Map<String, String> fbLogin(String authorizationCode) {
         String[] fields = {"name", "email", "first_name", "last_name", "picture"};
         log.info("Facebook authorization code: {}", authorizationCode);
-
         UriComponents builder = UriComponentsBuilder.fromHttpUrl(fbUri)
                 .queryParam("fields", String.join(",", fields))
                 .queryParam("access_token", authorizationCode).build();
@@ -169,8 +177,11 @@ public class UserService implements BaseService<User, Long> {
                 .lastName(fbUser.getLast_name()).verified(Boolean.TRUE).imageUrl(fbUser.getPicture().getData().getUrl()).build();
         if (exists(user)) {
             Optional<User> userOptional = findByUsername(user.getEmail());
+            findActiveUser(user.getEmail()).orElseThrow(() -> new
+                    UsernameNotFoundException("Your Account is Inactive. Please Contact the System Administrator"));
             return generateToken(userOptional.get());
         }
+        user.setStatus(Boolean.TRUE);
         User saved = create(user);
         return generateToken(saved);
     }
@@ -179,5 +190,12 @@ public class UserService implements BaseService<User, Long> {
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils.createAuthorityList(user.getRole().getDescription());
         UserContext userContext = UserContext.create(user.getEmail(), grantedAuthorities);
         return User.generateAuthToken(appTokenUtil.generateToken(userContext), user.getRole().getName(), user);
+    }
+
+    void activateOrDeactivateUser(User user) {
+        User found = userRepository.findByEmail(user.getEmail());
+        if (ObjectUtils.isEmpty(user)) throw new DataNotFoundException("User not found");
+        found.setStatus(ObjectUtils.isEmpty(found.getStatus()) || Boolean.FALSE.equals(found.getStatus()) ? Boolean.TRUE : Boolean.FALSE );
+        userRepository.save(found);
     }
 }

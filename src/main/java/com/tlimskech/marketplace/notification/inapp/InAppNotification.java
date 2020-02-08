@@ -29,7 +29,8 @@ public class InAppNotification extends Data {
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "msg_subj")
     private String subject;
+    @Column(name = "msg_read")
     private boolean read;
 }

@@ -2,11 +2,12 @@ package com.tlimskech.marketplace.category.homegarden;
 
 import com.tlimskech.marketplace.ad.Ad;
 import com.tlimskech.marketplace.core.data.Active;
-import com.tlimskech.marketplace.core.data.CodeValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,7 +17,5 @@ import javax.persistence.*;
 @Active
 public class HomeGarden extends Ad {
 
-    @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "color_cd")),
-            @AttributeOverride(name = "name", column = @Column(name = "color"))})
-    private CodeValue color;
+    private String color;
 }

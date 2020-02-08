@@ -1,7 +1,10 @@
 package com.tlimskech.marketplace.storage;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.tlimskech.marketplace.exception.ApplicationException;
 import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -17,33 +20,33 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-//@Profile("prod")
+// @Profile("prod")
 @Profile("mysql")
 public class CloudStorage implements FileStorageService {
 
     @Value("${upload.dir}")
     private String directory;
     private final String SLASH = File.separator;
-    private @Value("${cloudinary.apikey}") String key;
-    private @Value("${cloudinary.apisecret}") String secret;
-    @Value("${cloudinary.cloudname}")
-    private String cloud;
+    private final Cloudinary cloudinaryConfig;
 
-    private Cloudinary getCloudinaryClient() {
-        return new Cloudinary(com.cloudinary.utils.ObjectUtils.asMap(
-                "cloud_name", cloud,
-                "api_key", key,
-                "api_secret", secret,
-                "secure", true));
+    public CloudStorage(Cloudinary cloudinaryConfig) {
+        this.cloudinaryConfig = cloudinaryConfig;
     }
 
     @Override
     @SneakyThrows
     public String singleUpload(MultipartFile file, String name) {
-        Map params = com.cloudinary.utils.ObjectUtils.asMap("resource_type", "image");
-        File convFile = multipartToFile(file);
-        Map upload = getCloudinaryClient().uploader().upload(convFile, params);
-        return upload.get("url").toString();
+        try {
+            File conFile = multipartToFile(file);
+            Map upload = cloudinaryConfig.uploader().upload(conFile, ObjectUtils.emptyMap());
+            FileUtils.deleteQuietly(conFile);
+            return upload.get("url").toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApplicationException(e.getMessage());
+        }
+
+
     }
 
     @Override
@@ -63,9 +66,9 @@ public class CloudStorage implements FileStorageService {
         return new FileInputStream(file);
     }
 
-    private static File multipartToFile(MultipartFile image) throws IllegalStateException, IOException {
-        File convFile = Files.createTempFile("temp", image.getOriginalFilename()).toFile();
-        image.transferTo(convFile);
+    private static File multipartToFile(MultipartFile multipart) throws IllegalStateException, IOException {
+        File convFile = new File(String.format("%s/%s", System.getProperty("java.io.tmpdir"), multipart.getOriginalFilename()));
+        multipart.transferTo(convFile);
         return convFile;
     }
 }

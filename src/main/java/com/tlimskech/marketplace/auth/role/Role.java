@@ -4,7 +4,7 @@ import com.tlimskech.marketplace.core.data.BaseEnum;
 
 public enum Role implements BaseEnum {
 
-    ADMIN("Admin"), MEMBER("Member");
+    SUPER_ADMIN("Super Admin"), ADMIN("Admin"), MEMBER("Member");
 
     private String description;
 

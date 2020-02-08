@@ -6,8 +6,6 @@ import com.tlimskech.marketplace.core.data.Data;
 import com.tlimskech.marketplace.core.data.SearchRequest;
 import com.tlimskech.marketplace.core.valueobject.Code;
 import com.tlimskech.marketplace.core.valueobject.TitleDescription;
-import com.tlimskech.marketplace.global.picklist.Picklist;
-import com.tlimskech.marketplace.global.picklist.PicklistType;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.StringUtils;

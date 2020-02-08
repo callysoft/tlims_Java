@@ -7,9 +7,9 @@
     <threadsafe>true</threadsafe>
     <code-lock>false</code-lock>
     <sessions-enabled>false</sessions-enabled>
-    <!--<staging>-->
-        <!--<enable-jar-classes>true</enable-jar-classes>-->
-    <!--</staging>-->
+    <!--<staging>
+        <enable-jar-classes>true</enable-jar-classes>
+    </staging>-->
     <system-properties>
         <property name='java.util.logging.config.file' value='WEB-INF/classes/logging.properties'/>
     </system-properties>

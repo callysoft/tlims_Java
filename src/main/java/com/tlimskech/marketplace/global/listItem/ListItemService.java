@@ -77,4 +77,8 @@ public class ListItemService implements BaseService<ListItem, Long> {
         return listItemRepository.findByItemTypeAndSubCategories_CodeAndParentList_ListCode_DataCode(ListItemType.valueOf(itemType), subCode,
                 parentListCode);
     }
+
+    public List<ListItem> findByItemType(String itemType) {
+        return listItemRepository.findByItemType(ListItemType.valueOf(itemType));
+    }
 }
