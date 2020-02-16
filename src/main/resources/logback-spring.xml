@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!--<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <property name="LOG_PATH" value="logs"/>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
                 %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
@@ -12,24 +16,20 @@
         <appender-ref ref="Console"/>
     </root>
 
-    &lt;!&ndash; Log everything at the TRACE level &ndash;&gt;
-    <logger name="com.example" level="trace" additivity="false">
+    <appender name="FileAppender" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_PATH}/log.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Log everything at the TRACE level -->
+    <logger name="com.tlimskech.marketplace" level="trace" additivity="false">
         <appender-ref ref="Console"/>
     </logger>
--->
-    <include resource="org/springframework/cloud/gcp/autoconfigure/logging/logback-appender.xml"/>
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
-
-    <springProfile name="local">
-        <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
-        </root>
-    </springProfile>
-
-    <springProfile name="!local">
-        <root level="INFO">
-            <appender-ref ref="STACKDRIVER"/>
-        </root>
-    </springProfile>
+    <logger name="com.tlimskech.marketplace" level="info" additivity="false">
+        <appender-ref ref="FileAppender"/>
+    </logger>
 </configuration>

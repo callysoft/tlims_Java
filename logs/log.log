@@ -1,0 +1,9 @@
+16-02-2020 13:53:44.932 [restartedMain] INFO  c.t.m.MarketplaceApplication.log - Starting MarketplaceApplication on TECHGRATA-DEVPC1 with PID 11516 (C:\development\tlims\tlimskechapi\target\classes started by goodluck.ndumanya in C:\development\tlims\tlimskechapi)
+16-02-2020 13:53:44.936 [restartedMain] INFO  c.t.m.MarketplaceApplication.log - The following profiles are active: dev
+16-02-2020 13:53:52.904 [restartedMain] INFO  c.t.m.MarketplaceApplication.log - Started MarketplaceApplication in 8.421 seconds (JVM running for 9.237)
+16-02-2020 13:59:07.132 [restartedMain] INFO  c.t.m.MarketplaceApplication.log - Starting MarketplaceApplication on TECHGRATA-DEVPC1 with PID 19444 (C:\development\tlims\tlimskechapi\target\classes started by goodluck.ndumanya in C:\development\tlims\tlimskechapi)
+16-02-2020 13:59:07.136 [restartedMain] INFO  c.t.m.MarketplaceApplication.log - The following profiles are active: prod
+16-02-2020 14:00:45.639 [restartedMain] INFO  c.t.m.MarketplaceApplication.log - Starting MarketplaceApplication on TECHGRATA-DEVPC1 with PID 4040 (C:\development\tlims\tlimskechapi\target\classes started by goodluck.ndumanya in C:\development\tlims\tlimskechapi)
+16-02-2020 14:00:45.643 [restartedMain] INFO  c.t.m.MarketplaceApplication.log - The following profiles are active: prod
+16-02-2020 14:03:55.730 [restartedMain] INFO  c.t.m.MarketplaceApplication.log - Starting MarketplaceApplication on TECHGRATA-DEVPC1 with PID 6772 (C:\development\tlims\tlimskechapi\target\classes started by goodluck.ndumanya in C:\development\tlims\tlimskechapi)
+16-02-2020 14:03:55.733 [restartedMain] INFO  c.t.m.MarketplaceApplication.log - The following profiles are active: prod

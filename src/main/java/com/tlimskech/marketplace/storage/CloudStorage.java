@@ -10,18 +10,14 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
-// @Profile("prod")
-@Profile("mysql")
+@Profile("prod")
+//@Profile("mysql")
 public class CloudStorage implements FileStorageService {
 
     @Value("${upload.dir}")
@@ -61,7 +57,7 @@ public class CloudStorage implements FileStorageService {
 
     @Override
     @SneakyThrows
-    public InputStream stream(String key) {
+    public InputStream stream(String key) throws FileNotFoundException {
         File file = new File(directory + SLASH + key);
         return new FileInputStream(file);
     }
