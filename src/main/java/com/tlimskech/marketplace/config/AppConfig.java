@@ -28,7 +28,7 @@ public class AppConfig {
     }
 
     @Bean
-    @Profile("mysql")
+    @Profile("prod")
     public Cloudinary cloudinaryConfig() {
         Map<String, String> config = new HashMap<>();
         config.put("cloud_name", cloud);
