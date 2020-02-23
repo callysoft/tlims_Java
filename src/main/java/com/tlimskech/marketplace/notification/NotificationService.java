@@ -57,7 +57,7 @@ public class NotificationService {
         messageList.forEach(mailMessage -> {
             MimeMessagePreparator messagePreparator = mimeMessage -> {
                 MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-                messageHelper.setFrom("goodluckndumanya1@gmail.com", "Tlims-Kech Market Place");
+                messageHelper.setFrom("admin@instantcl.com", "Tlims-Kech Market Place");
                 messageHelper.setTo(mailMessage.getReceipient());
                 messageHelper.setSubject(mailMessage.getSubject());
                 messageHelper.setText(mailMessage.getPlainText(), !StringUtils.isEmpty(mailMessage.getTemplateName()));
