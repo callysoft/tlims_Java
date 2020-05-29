@@ -29,7 +29,7 @@ public class AppTokenAuthenticationProcessingFilter extends AbstractAuthenticati
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
+            throws AuthenticationException {
         String tokenPayload = request.getHeader(AppSecurityConfig.JWT_TOKEN_HEADER_PARAM);
         System.out.println("Token Fetched " + tokenPayload);
         return getAuthenticationManager().authenticate(new AppAuthenticationToken(tokenPayload));
