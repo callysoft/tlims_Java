@@ -1,15 +1,18 @@
 package com.tlimskech.marketplace.category.fashion;
 
 import com.tlimskech.marketplace.storage.FileStorageService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/fashions")
+@Log4j2
 public class FashionController {
 
     private final FashionService fashionService;
@@ -23,9 +26,12 @@ public class FashionController {
     @PostMapping("/create")
     public ResponseEntity<?> createFashion(@RequestPart("fashion") Fashion fashion,
                                               @RequestParam(required = false, name = "file") MultipartFile[] file) {
-        System.out.println("File Gotten " + file);
+        log.info("Fashion to create: {}", fashion);
+        System.out.println("File Gotten " + Arrays.toString(file));
         List<String> images = fileStorageService.multipleUpload(file, fashion.getTitleDescription().getTitle());
         fashion.setImages(images);
-        return ResponseEntity.ok(fashionService.create(fashion));
+        Fashion saved = fashionService.create(fashion);
+        log.info("Fashion created: {}", saved);
+        return ResponseEntity.ok(saved);
     }
 }

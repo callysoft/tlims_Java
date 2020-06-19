@@ -48,11 +48,13 @@ public class ErrorControllerAdvice {
     public ResponseEntity<?> handlePasswordUnMatchException(HttpServletRequest request, DataNotFoundException exception) {
         ErrorData data = new ErrorData(ErrorCode.DATA_NOT_FOUND, exception.getMessage());
         HttpStatus status = getStatus(request);
+        exception.printStackTrace();
         return ResponseEntity.status(status).body(data);
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<?> handleMaxUploadSizeExceededException(HttpServletRequest request, MaxUploadSizeExceededException exception) {
+        exception.printStackTrace();
         ErrorData data = new ErrorData(ErrorCode.MAX_FILE_LIMIT, exception.getMessage());
         HttpStatus status = getStatus(request);
         return ResponseEntity.status(status).body(data);
@@ -101,6 +103,7 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(org.hibernate.exception.ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<?> handleUserNameNotFoundException(HttpServletRequest request, org.hibernate.exception.ConstraintViolationException exception) {
+        exception.printStackTrace();
         List<ErrorData> errors = new ArrayList<>();
 //        for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
 //            String value = (violation.getInvalidValue() == null ? null : violation.getInvalidValue().toString());
@@ -130,6 +133,7 @@ public class ErrorControllerAdvice {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException exception) {
+        exception.printStackTrace();
         List<ErrorData> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
             String value = (violation.getInvalidValue() == null ? null : violation.getInvalidValue().toString());
@@ -142,6 +146,7 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(BindException.class)
     public ResponseEntity<?> handleBindException(HttpServletRequest request, BindException exception) {
         HttpStatus status = getStatus(request);
+        exception.printStackTrace();
         return ResponseEntity.status(status).body(convert(exception.getAllErrors()));
     }
 
@@ -152,6 +157,7 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException exception) {
         HttpStatus status = getStatus(request);
+        exception.printStackTrace();
         return ResponseEntity.status(status).body(convert(exception.getBindingResult().getAllErrors()));
     }
 
@@ -162,6 +168,7 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(ServletRequestBindingException.class)
     public ResponseEntity<?> handleServletRequestBindingException(HttpServletRequest request, ServletRequestBindingException exception) {
         HttpStatus status = getStatus(request);
+        exception.printStackTrace();
         return ResponseEntity.status(status).body(new ErrorData(null, null, exception.getMessage()));
     }
 
@@ -172,6 +179,7 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException exception) {
         HttpStatus status = getStatus(request);
+        exception.printStackTrace();
         return ResponseEntity.status(status).body(new ErrorData(null, null, exception.getMessage()));
     }
 

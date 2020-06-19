@@ -11,6 +11,7 @@ import com.tlimskech.marketplace.exception.ApplicationException;
 import com.tlimskech.marketplace.global.contact.Contact;
 import com.tlimskech.marketplace.notification.Notification;
 import com.tlimskech.marketplace.notification.NotificationService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,7 @@ import static java.lang.Boolean.TRUE;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
+@Slf4j
 public class AdService extends GlobalService implements BaseService<Ad, Long> {
 
     private final AdRepository adRepository;

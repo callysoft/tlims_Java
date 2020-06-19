@@ -1,15 +1,16 @@
 package com.tlimskech.marketplace.category.electronic;
 
 import com.tlimskech.marketplace.storage.FileStorageService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/electronics")
+@Log4j2
 public class ElectronicController {
 
     private final ElectronicService electronicService;
@@ -20,38 +21,15 @@ public class ElectronicController {
         this.fileStorageService = fileStorageService;
     }
 
-//    /* ELETRONICS */
-//    @GetMapping
-//    public ResponseEntity<?> getAllElectronics(
-//            @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
-//            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
-//        return ResponseEntity.ok(electronicService.findAll(PageAttribute.builder().page(page).size(size).build()));
-//    }
-//
-//    @GetMapping("/history")
-//    public ResponseEntity<?> getAllElectronics(@RequestParam(name = "searchTerm", required = false) String searchTerm,
-//                                               @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
-//                                               @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
-//                                               @RequestParam(name = "order", required = false, defaultValue = "-id") String order) {
-//        return ResponseEntity.ok(electronicService.findAll(searchTerm, PageAttribute.builder().page(page).size(size).order(order).build()));
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getAllElectronicsById(@PathVariable("id") Long id) {
-//        return ResponseEntity.ok(
-//                electronicService.findOne(id).isPresent() ? electronicService.findOne(id).get() : HttpStatus.NOT_FOUND);
-//    }
-
     @PostMapping("/create")
     public ResponseEntity<?> createElectronic(@RequestPart("electronic") Electronic electronic,
                                               @RequestParam(required = false, name = "file") MultipartFile[] file) {
+        log.info("Electronics to be created:: {}", electronic);
         List<String> images = fileStorageService.multipleUpload(file, electronic.getTitleDescription().getTitle());
         electronic.setImages(images);
-        return ResponseEntity.ok(electronicService.create(electronic));
+        Electronic saved = electronicService.create(electronic);
+        log.info("Electronics to be created:: {}", saved);
+        return ResponseEntity.ok(saved);
     }
 
-//    @GetMapping("/count")
-//    public ResponseEntity<?> getElectronicCount() {
-//        return ResponseEntity.ok(electronicService.countAll());
-//    }
 }
