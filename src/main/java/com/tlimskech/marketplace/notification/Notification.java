@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,4 +31,5 @@ public class Notification extends BaseModel {
     @Enumerated(EnumType.STRING)
     private Status notificationStatus;
     private int noRetry;
+    private Date nextRetry;
 }

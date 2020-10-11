@@ -1,7 +1,10 @@
 package com.tlimskech.marketplace.auth.user;
 
 import com.tlimskech.marketplace.auth.data.ChangePasswordRequest;
+import com.tlimskech.marketplace.auth.data.ResetPasswordRequest;
 import com.tlimskech.marketplace.auth.role.Role;
+import com.tlimskech.marketplace.auth.token.Token;
+import com.tlimskech.marketplace.auth.token.TokenService;
 import com.tlimskech.marketplace.core.data.SearchRequest;
 import com.tlimskech.marketplace.core.service.BaseService;
 import com.tlimskech.marketplace.core.valueobject.facebook_vo.FbUser;
@@ -25,6 +28,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
@@ -43,40 +47,53 @@ public class UserService implements BaseService<User, Long> {
     private NotificationService notificationService;
     @Value("${email.verification.link}")
     private String verificationLink;
+    @Value("${email.verification.template}")
+    private String regTemplate;
+    @Value("${email.otp.template}")
+    private String otpTemplate;
     @Value("${app.FACEBOOK_GRAPH_API}")
     private String fbUri;
     private RestTemplate restTemplate;
     private final AppTokenUtil appTokenUtil;
+    private final TokenService tokenService;
 
-    public UserService(UserRepository userRepository, NotificationService notificationService, RestTemplate restTemplate, AppTokenUtil appTokenUtil) {
+    public UserService(UserRepository userRepository, NotificationService notificationService, RestTemplate restTemplate, AppTokenUtil appTokenUtil, TokenService tokenService) {
         this.userRepository = userRepository;
         this.notificationService = notificationService;
         this.restTemplate = restTemplate;
         this.appTokenUtil = appTokenUtil;
+        this.tokenService = tokenService;
     }
 
     @Override
+    @Transactional
     public User create(User user) {
         user.setRole(Role.MEMBER);
         if (!StringUtils.isEmpty(user.getPassword())) {
             user.encryptPassword();
         }
         if (exists(user)) throw new ApplicationException(String.format("User with email %s already exist", user.getEmail()));
-        user = userRepository.save(user);
-        sendVerificationMessage(user);
-        return user;
+        try {
+            user = userRepository.save(user);
+            sendVerificationMessage(user);
+            log.info("User successfully boarded....");
+            return user;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ApplicationException("Server error occurred. Please contact admin");
+        }
     }
 
     private void sendVerificationMessage(User user) {
         Map<String, String> variables = new HashMap<>();
         variables.put("link", verificationLink + "/" + user.getCode());
-        variables.put("name", String.format("%s %s", user.getLastName(), user.getFirstName()));
+        variables.put("name", user.getFirstName());
 
         Notification message = Notification.builder()
                 .content(variables)
                 .receipient(user.getEmail())
                 .subject("Email Account Verification")
-                .templateName("registration")
+                .templateName(regTemplate)
                 .build();
         notificationService.prepareAndSendHtmlMessage(message);
     }
@@ -197,5 +214,57 @@ public class UserService implements BaseService<User, Long> {
         if (ObjectUtils.isEmpty(user)) throw new DataNotFoundException("User not found");
         found.setStatus(ObjectUtils.isEmpty(found.getStatus()) || Boolean.FALSE.equals(found.getStatus()) ? Boolean.TRUE : Boolean.FALSE );
         userRepository.save(found);
+    }
+
+    public void initiateForgotPassword(String email) {
+        User user = this.findByUsername(email).orElseThrow(() -> new DataNotFoundException("User with email not found"));
+        try {
+            Token token = tokenService.buildSoftToken(email, 6);
+            if (token == null) {
+                throw new ApplicationException("Sever error occurred. Please try again soon");
+            }
+            // send otp to user email
+            this.sendOTPMessage(user, token.getToken());
+        } catch (Exception e) {
+            throw new ApplicationException("Sever error occurred. Please try again soon");
+        }
+
+    }
+
+    private void sendOTPMessage(User user, String token) {
+        Map<String, String> variables = new HashMap<>();
+        variables.put("name", user.getFirstName());
+        variables.put("token", token);
+
+        Notification message = Notification.builder()
+                .content(variables)
+                .receipient(user.getEmail())
+                .subject("Email Verification OTP")
+                .templateName(otpTemplate)
+                .build();
+        notificationService.prepareAndSendHtmlMessage(message);
+    }
+
+    public void resetUserPassword(ResetPasswordRequest passwordRequest) {
+        User user = this.findByUsername(passwordRequest.getEmail()).orElseThrow(() -> new DataNotFoundException("User with email not found"));
+        tokenService.verifyToken(passwordRequest.getToken(), passwordRequest.getEmail());
+        user.setPassword(passwordRequest.getPassword());
+        user.encryptPassword();
+        userRepository.save(user);
+        log.info("User password reset successful");
+    }
+
+    public void testMail() {
+        Map<String, String> variables = new HashMap<>();
+        variables.put("token", "1030139");
+        variables.put("name", "Goodluck");
+
+        Notification message = Notification.builder()
+                .content(variables)
+                .receipient("goodluckndumanya1@gmail.com")
+                .subject("Email Verification OTP")
+                .templateName(otpTemplate)
+                .build();
+        notificationService.prepareAndSendHtmlMessage(message);
     }
 }

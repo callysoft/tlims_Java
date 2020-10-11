@@ -30,6 +30,8 @@ public class User extends BaseEntity {
     @NotBlank
     @Column(nullable = false)
     private String firstName;
+    @NotBlank
+    @Column(nullable = false)
     private String lastName;
     @NotBlank
     @Column(nullable = false, unique = true)

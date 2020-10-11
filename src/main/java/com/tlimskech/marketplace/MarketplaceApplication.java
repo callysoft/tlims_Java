@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 @EnableJpaRepositories(basePackages="com.tlimskech")
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableScheduling
+@EnableTransactionManagement
 @EnableAsync(proxyTargetClass = true)
 public class MarketplaceApplication {
 

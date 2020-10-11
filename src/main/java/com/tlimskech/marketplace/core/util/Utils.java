@@ -4,6 +4,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Optional;
+import java.util.Random;
 
 public class Utils {
 
@@ -20,5 +21,9 @@ public class Utils {
 
     public static String nullSafeString(String str) {
         return StringUtils.isEmpty(str) ? "" : str;
+    }
+
+    public static String generateSoftToken(int size) {
+        return org.apache.commons.lang3.StringUtils.leftPad(new Random().nextInt(1000000) + "", size, "0");
     }
 }
