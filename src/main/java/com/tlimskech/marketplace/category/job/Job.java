@@ -23,6 +23,9 @@ public class Job extends Ad {
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "min_exp_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "min_exp"))})
     private CodeValue minimumExp;
+@AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "others_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "others"))})
+    private CodeValue others;
     @Column(length = 5000)
     private String responsibilities;
     @Column(length = 5000)

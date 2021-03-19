@@ -45,5 +45,8 @@ public class Beauty extends Ad {
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "vPackage_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "vPackage"))})
     private CodeValue vPackage;
+@AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "others_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "others"))})
+    private CodeValue others;
 
 }

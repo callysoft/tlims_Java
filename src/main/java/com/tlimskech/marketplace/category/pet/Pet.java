@@ -28,4 +28,7 @@ public class Pet extends Ad {
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "brdtyp_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "brdtyp_nm"))})
     private CodeValue breedType;
+@AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "others_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "others"))})
+    private CodeValue others;
 }

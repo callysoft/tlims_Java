@@ -43,6 +43,9 @@ public class Fashion extends Ad {
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "display_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "display_nm"))})
     private CodeValue display;
+@AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "others_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "others"))})
+    private CodeValue others;
     @Lob
     private String features;
     @Lob

@@ -22,4 +22,7 @@ public class Repair extends Ad {
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "frame_mat_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "frame_mat"))})
     private CodeValue frameMaterial;
+@AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "others_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "others"))})
+    private CodeValue others;
 }

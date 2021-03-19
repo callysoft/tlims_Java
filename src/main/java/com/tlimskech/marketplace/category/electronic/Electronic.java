@@ -32,4 +32,7 @@ public class Electronic extends Ad {
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "capacity_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "capacity"))})
     private CodeValue capacity;
+@AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "others_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "others"))})
+    private CodeValue others;
 }

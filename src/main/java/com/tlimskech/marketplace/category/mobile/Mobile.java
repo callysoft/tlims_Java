@@ -32,6 +32,9 @@ public class Mobile extends Ad {
     @AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "os_cd")),
             @AttributeOverride(name = "name", column = @Column(name = "os_nm"))})
     private CodeValue os;
+@AttributeOverrides({@AttributeOverride(name = "code", column = @Column(name = "others_cd")),
+            @AttributeOverride(name = "name", column = @Column(name = "others"))})
+    private CodeValue others;
     private Boolean isExchangeable;
 
 }
