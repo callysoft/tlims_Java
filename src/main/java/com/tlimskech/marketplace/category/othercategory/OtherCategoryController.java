@@ -1,4 +1,4 @@
-package com.tlimskech.marketplace.category.services;
+package com.tlimskech.marketplace.category.othercategory;
 
 import com.tlimskech.marketplace.storage.FileStorageService;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +24,7 @@ public class OtherCategoryController {
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestPart("othercategories") OtherCategory othercategory,
                                     @RequestParam(required = false, name = "file") MultipartFile[] file) {
-        log.info("Service to create {}", othercategories);
+        log.info("OtherCategory to create {}", othercategories);
         List<String> images = fileStorageService.multipleUpload(file, othercategories.getTitleDescription().getTitle());
         othercategories.setImages(images);
         OtherCategory saved = othercategoryService.create(othercategories);

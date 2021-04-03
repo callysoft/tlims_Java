@@ -1,4 +1,4 @@
-package com.tlimskech.marketplace.category.services;
+package com.tlimskech.marketplace.category.othercategory;
 
 import com.tlimskech.marketplace.ad.AdService;
 import com.tlimskech.marketplace.core.service.BaseService;
@@ -9,23 +9,23 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class OtherCategoryService implements BaseService<Services, Long> {
+public class OtherCategoryService implements BaseService<OtherCategory, Long> {
 
     private final AdService adService;
     private final OtherCategoryRepository othercategoryRepository;
 
-    public ServicesService(AdService adService, OtherCategoryRepository othercategoryRepository) {
+    public OtherCategoryService(AdService adService, OtherCategoryRepository othercategoryRepository) {
         this.adService = adService;
         this.othercategoryRepository = othercategoryRepository;
     }
 
     @Override
-    public Services create(OtherCataegory othercategory) {
+    public OtherCategory create(OtherCataegory othercategory) {
         return (OtherCategory) adService.create(othercategory);
     }
 
     @Override
-    public Services update(OtherCategory othercategory) {
+    public OtherCategory update(OtherCategory othercategory) {
         return null;
     }
 

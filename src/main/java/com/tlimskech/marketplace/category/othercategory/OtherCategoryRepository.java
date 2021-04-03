@@ -1,4 +1,4 @@
-package com.tlimskech.marketplace.category.services;
+package com.tlimskech.marketplace.category.othercategory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

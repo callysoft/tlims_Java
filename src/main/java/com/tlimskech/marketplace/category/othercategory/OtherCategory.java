@@ -1,4 +1,4 @@
-package com.tlimskech.marketplace.category.services;
+package com.tlimskech.marketplace.category.othercategory;
 
 import com.tlimskech.marketplace.ad.Ad;
 import com.tlimskech.marketplace.core.data.Active;
@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "cat_othercategory")
 @DiscriminatorValue("other_sub")
 @Active
-public class Services extends Ad {
+public class OtherCategory extends Ad {
 
     private Boolean contactForPrice;
     /*private String serviceArea;
