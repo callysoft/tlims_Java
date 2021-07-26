@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Optional;
-
+@CrossOrigin
 @SpringBootApplication
 @EnableJpaRepositories(basePackages="com.tlimskech")
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
