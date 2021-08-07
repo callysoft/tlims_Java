@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class IndexController {
 
     @GetMapping("/")
-    @CrossOrigin(origins = "http://www.tlims-kech.com/categories/")
+    @CrossOrigin(origins = "http://localhost:4200")
     public String index() {
         return "redirect:/tlims";
     }
 
     @GetMapping("tlims/**")
+     @CrossOrigin(origins = "http://localhost:4200")
     public String tlims() {
         return "index";
     }
