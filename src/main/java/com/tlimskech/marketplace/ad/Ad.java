@@ -58,9 +58,9 @@ public class Ad extends BaseEntity {
     @AttributeOverrides({@AttributeOverride(name = "currency", column = @Column(name = "price_ccy", length = 3)),
             @AttributeOverride(name = "amount", column = @Column(name = "price_amt", scale = 10, precision = 38))})
     private Money price;
-    //  @AttributeOverrides({@AttributeOverride(name = "currency", column = @Column(name = "price_ccy", length = 3)),
-            // @AttributeOverride(name = "amount", column = @Column(name = "selling_price", scale = 10, precision = 38))})
-    // private Money sellingPrice;
+      @AttributeOverrides({@AttributeOverride(name = "currency", column = @Column(name = "price_ccy", length = 3)),
+    @AttributeOverride(name = "amount", column = @Column(name = "selling_price", scale = 10, precision = 38))})
+    private Money sellingPrice;
     private Boolean negotiable;
     private Boolean authorized;
     private Boolean featured;
