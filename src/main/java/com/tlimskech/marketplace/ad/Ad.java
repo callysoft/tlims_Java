@@ -59,6 +59,10 @@ public class Ad extends BaseEntity {
             @AttributeOverride(name = "amount", column = @Column(name = "price_amt", scale = 10, precision = 38))})
     private Money price;
 
+     @AttributeOverrides({@AttributeOverride(name = "currency", column = @Column(name = "price_com", length = 3)),
+            @AttributeOverride(name = "amount", column = @Column(name = "selling_price", scale = 10, precision = 38))})
+    private Money prices;
+
     private Boolean negotiable;
     private Boolean authorized;
     private Boolean featured;
@@ -87,6 +91,7 @@ public class Ad extends BaseEntity {
             return qAd.isNotNull();
         }
         return qAd.price.amount.stringValue().containsIgnoreCase(request.getSearchTerm())
+        or.(qAd.prices.amount.stringValue().containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.titleDescription.title.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.brand.name.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.category.name.containsIgnoreCase(request.getSearchTerm()))
