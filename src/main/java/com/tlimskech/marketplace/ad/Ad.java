@@ -91,7 +91,6 @@ public class Ad extends BaseEntity {
             return qAd.isNotNull();
         }
         return qAd.price.amount.stringValue().containsIgnoreCase(request.getSearchTerm())
-      //  .or(qAd.prices.amount.stringValue().containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.titleDescription.title.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.brand.name.containsIgnoreCase(request.getSearchTerm()))
                 .or(qAd.category.name.containsIgnoreCase(request.getSearchTerm()))

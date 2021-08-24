@@ -4,7 +4,7 @@ import com.tlimskech.marketplace.core.data.BaseEnum;
 
 public enum Transmission implements BaseEnum {
 
-    AUTOMATIC("Automatic"), MANUAL("Manual");
+    AUTOMATIC("Automatic"),FORMATIC("4MATIC"), MANUAL("Manual");
 
     private String description;
 
